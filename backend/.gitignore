@@ -1,0 +1,18 @@
+node_modules
+.idea
+# Local database
+data/*.sqlite3
+data/*.sqlite3-journal
+data/*.sqlite3-wal
+data/*.sqlite3-shm
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+*.log
+
+# Uploaded files
+public/uploads/*
+!public/uploads/.gitkeep
