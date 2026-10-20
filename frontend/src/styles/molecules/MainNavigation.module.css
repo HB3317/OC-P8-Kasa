@@ -1,0 +1,7 @@
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  white-space: nowrap;
+  font-size: 0.875rem;
+}

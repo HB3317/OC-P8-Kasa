@@ -1,0 +1,150 @@
+.card {
+  width: 742px;
+  max-width: 100%;
+  min-height: 796px;
+  padding: 82px 24px 48px;
+
+  border: 1px solid var(--color-grey-light);
+  border-radius: 10px;
+  background-color: var(--color-background);
+}
+
+.intro {
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.description {
+  max-width: 490px;
+  margin: 12px auto 0;
+  color: var(--color-text-primary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 360px;
+  max-width: 100%;
+  margin: 40px auto 0;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.terms {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  gap: 8px;
+  margin-top: 30px;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.terms input {
+  width: 12px;
+  height: 12px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--color-primary);
+}
+
+.termsText {
+  text-decoration: underline;
+}
+
+.submit {
+  width: 230px;
+  height: 36px;
+  margin-top: 40px;
+  border: 0;
+  border-radius: 10px;
+
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.submit:focus-visible,
+.terms input:focus-visible,
+.loginLink a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.notice {
+  margin: 12px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  text-align: center;
+}
+
+.loginLink {
+  margin: 24px 0 0;
+  color: var(--color-primary);
+  font-size: 14px;
+  text-align: center;
+}
+
+.loginLink a {
+  color: inherit;
+}
+
+.loginLink a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 800px) {
+  .card {
+    width: 358px;
+    min-height: 742px;
+    padding: 32px 16px 36px;
+  }
+
+  .title {
+    max-width: 300px;
+    margin-inline: auto;
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .description {
+    max-width: 325px;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .form {
+    width: 100%;
+    margin-top: 38px;
+  }
+
+  .terms {
+    margin-top: 30px;
+  }
+
+  .submit {
+    margin-top: 40px;
+  }
+}

@@ -1,0 +1,19 @@
+.link {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font: inherit;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+.link[aria-current="page"] {
+  color: var(--color-primary);
+  font-weight: 600;
+}

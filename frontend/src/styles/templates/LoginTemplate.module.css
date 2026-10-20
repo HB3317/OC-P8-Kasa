@@ -1,0 +1,22 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  width: 100%;
+  background: var(--color-background-soft);
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  padding: 136px 16px 90px;
+}
+
+@media (max-width: 800px) {
+  .main {
+    padding: 94px 16px 94px;
+  }
+}
