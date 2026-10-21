@@ -1,0 +1,13 @@
+.card { min-width: 0; overflow: hidden; border-radius: 12px; background: var(--color-white); }
+.link { display: flex; flex-direction: column; height: 100%; }
+.link:focus-visible { outline: 3px solid var(--color-primary); outline-offset: -3px; }
+.picture { position: relative; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: var(--color-surface-muted); }
+.image { object-fit: cover; transition: transform 180ms ease; }
+.link:hover .image { transform: scale(1.025); }
+.placeholder { display: grid; place-items: center; height: 100%; color: var(--color-text-secondary); }
+.details { display: flex; flex-direction: column; flex: 1; min-height: 174px; padding: 16px 24px 18px; }
+.title { font-size: 17px; font-weight: 600; line-height: 1.35; }
+.location { margin-top: 10px; color: var(--color-text-secondary); font-size: 13px; }
+.price { margin-top: auto; padding-top: 24px; font-size: 13px; }
+.price strong { font-size: 16px; }
+@media (max-width: 800px) { .details { min-height: 165px; padding: 15px 18px 20px; } }

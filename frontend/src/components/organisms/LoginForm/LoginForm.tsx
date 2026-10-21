@@ -3,8 +3,8 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { httpClient, HttpError } from "@/services/httpClient";
-import type { AuthUser } from "@/types/auth";
+import { HttpError } from "@/services/httpClient";
+import { login } from "@/services/clientAuthService";
 
 import FormField from "@/components/atoms/FormField/FormField";
 import styles from "@/styles/organisms/LoginForm.module.css";
@@ -26,13 +26,10 @@ export default function LoginForm() {
     const form = new FormData(event.currentTarget);
 
     try {
-      await httpClient.post<{ user: AuthUser }, { email: string; password: string }>(
-        "/api/auth/login",
-        {
-            email: String(form.get("email") ?? ""),
-            password: String(form.get("password") ?? ""),
-          },
-      );
+      await login({
+        email: String(form.get("email") ?? "").trim(),
+        password: String(form.get("password") ?? ""),
+      });
 
       router.replace("/");
       router.refresh();

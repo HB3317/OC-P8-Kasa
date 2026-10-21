@@ -3,8 +3,8 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { httpClient, HttpError } from "@/services/httpClient";
-import type { AuthUser } from "@/types/auth";
+import { HttpError } from "@/services/httpClient";
+import { register } from "@/services/clientAuthService";
 
 import FormField from "@/components/atoms/FormField/FormField";
 import styles from "@/styles/organisms/RegisterForm.module.css";
@@ -39,14 +39,7 @@ export default function RegisterForm() {
     }
 
     try {
-      await httpClient.post<{ user: AuthUser }, { name: string; email: string; password: string }>(
-        "/api/auth/register",
-        {
-            name: `${firstName} ${lastName}`.trim(),
-            email,
-            password,
-          },
-      );
+      await register({ name: `${firstName} ${lastName}`.trim(), email, password });
 
       router.replace("/");
       router.refresh();

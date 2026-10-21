@@ -1,0 +1,26 @@
+.page { min-height: 100vh; background: var(--color-background-soft); }
+.main { width: min(1114px, calc(100% - 32px)); margin: 0 auto; padding: 26px 0 54px; }
+.intro { margin-bottom: 36px; text-align: center; }
+.intro h1 { color: var(--color-primary); font-size: 32px; line-height: 1.25; }
+.intro p { margin-top: 14px; font-size: 14px; line-height: 1.5; }
+.hero { position: relative; height: 460px; margin-bottom: 40px; border-radius: 20px; overflow: hidden; }
+.heroImage { object-fit: cover; }
+.how { margin-top: 42px; padding: 42px 50px; border-radius: 12px; background: var(--color-white); text-align: center; }
+.how h2 { font-size: 24px; }
+.how > p { max-width: 720px; margin: 20px auto 34px; font-size: 14px; line-height: 1.5; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; max-width: 840px; margin: 0 auto; text-align: left; }
+.step { min-height: 195px; padding: 24px 20px; border-radius: 8px; background: var(--color-primary); color: var(--color-on-primary); }
+.step h3 { font-size: 17px; font-weight: 600; }
+.step p { margin-top: 17px; font-size: 13px; line-height: 1.5; }
+@media (max-width: 800px) {
+ .main { padding-top: 36px; padding-bottom: 32px; }
+ .intro { margin: 0 auto 30px; max-width: 345px; }
+ .intro h1 { font-size: 28px; }
+ .intro p { margin-top: 14px; font-size: 13px; }
+ .hero { height: 360px; margin-bottom: 44px; border-radius: 18px; }
+ .how { margin-top: 34px; padding: 34px 18px; }
+ .how h2 { font-size: 22px; }
+ .how > p { font-size: 13px; }
+ .steps { grid-template-columns: 1fr; gap: 10px; }
+ .step { min-height: 135px; }
+}
