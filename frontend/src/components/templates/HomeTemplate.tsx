@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FavoritesProvider } from "@/hooks/useFavorites";
 import Header from "@/components/organisms/Header/Header";
 import Footer from "@/components/organisms/Footer/Footer";
 import PropertyGrid from "@/components/organisms/PropertyGrid/PropertyGrid";
@@ -26,7 +27,7 @@ export default function HomeTemplate({ properties }: Props) {
             className={styles.heroImage}
           />
         </div>
-        <PropertyGrid properties={properties} />
+        <FavoritesProvider><PropertyGrid properties={properties} /></FavoritesProvider>
         <section className={styles.how} aria-labelledby="how-title">
           <h2 id="how-title">Comment ça marche ?</h2>
           <p>Que vous partiez pour un week-end improvisé, des vacances en famille ou un voyage professionnel, Kasa vous aide à trouver un lieu qui vous ressemble.</p>

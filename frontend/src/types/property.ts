@@ -8,3 +8,10 @@ export type Property = {
   rating_avg: number | null;
   ratings_count: number;
 };
+
+export type PropertyDetail = Property & {
+  description: string | null;
+  pictures: string[];
+  equipments: string[];
+  tags: string[];
+};

@@ -58,6 +58,8 @@ async function request<TResponse, TBody = undefined>(
 }
 
 export const httpClient = {
+  request: <TResponse>(url: string, method: "POST" | "DELETE", options?: RequestOptions) =>
+    request<TResponse>(url, method, undefined, options),
   get: <TResponse>(url: string, options?: RequestOptions) =>
     request<TResponse>(url, "GET", undefined, options),
   post: <TResponse, TBody>(url: string, body: TBody, options?: RequestOptions) =>

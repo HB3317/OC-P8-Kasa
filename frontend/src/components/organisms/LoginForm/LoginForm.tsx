@@ -2,6 +2,8 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { safeRedirect } from "@/utils/safeRedirect";
+import { synchronizeGuestFavorites } from "@/services/favoriteService";
 import Link from "next/link";
 import { HttpError } from "@/services/httpClient";
 import { login } from "@/services/clientAuthService";
@@ -9,7 +11,7 @@ import { login } from "@/services/clientAuthService";
 import FormField from "@/components/atoms/FormField/FormField";
 import styles from "@/styles/organisms/LoginForm.module.css";
 
-export default function LoginForm() {
+export default function LoginForm({ nextPath }: { nextPath?: string }) {
   const router = useRouter();
 
   const [notice, setNotice] = useState("");
@@ -31,7 +33,8 @@ export default function LoginForm() {
         password: String(form.get("password") ?? ""),
       });
 
-      router.replace("/");
+      await synchronizeGuestFavorites().catch(() => {});
+      router.replace(safeRedirect(nextPath));
       router.refresh();
     } catch (error) {
       setNotice(error instanceof HttpError && error.status !== 503
@@ -95,7 +98,7 @@ export default function LoginForm() {
 
           <p>
             Pas encore de compte ?{" "}
-            <Link href="/register">Inscrivez-vous</Link>
+            <Link href={`/register?next=${encodeURIComponent(safeRedirect(nextPath))}`}>Inscrivez-vous</Link>
           </p>
         </div>
       </form>

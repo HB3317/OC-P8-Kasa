@@ -1,4 +1,3 @@
-
 import { cookies } from "next/headers";
 import { serverHttpClient } from "@/services/serverHttpClient";
 import { HttpError } from "@/services/httpClient";
@@ -118,4 +117,8 @@ export async function getSessionUser(): Promise<AuthUser | null> {
   } catch {
     return null;
   }
+}
+
+export async function getSessionToken(): Promise<string | null> {
+  return (await cookies()).get(COOKIE_NAME)?.value ?? null;
 }

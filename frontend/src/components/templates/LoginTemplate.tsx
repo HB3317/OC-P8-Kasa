@@ -4,13 +4,13 @@ import Footer from "@/components/organisms/Footer/Footer";
 
 import styles from "@/styles/templates/LoginTemplate.module.css";
 
-export default function LoginTemplate() {
+export default function LoginTemplate({ nextPath }: { nextPath?: string }) {
   return (
     <div className={styles.page}>
       <Header />
 
       <main className={styles.main}>
-        <LoginForm />
+        <LoginForm nextPath={nextPath} />
       </main>
 
       <Footer />

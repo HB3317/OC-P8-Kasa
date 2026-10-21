@@ -1,4 +1,4 @@
-.card { min-width: 0; overflow: hidden; border-radius: 12px; background: var(--color-white); }
+.card { position: relative; min-width: 0; overflow: hidden; border-radius: 12px; background: var(--color-white); }
 .link { display: flex; flex-direction: column; height: 100%; }
 .link:focus-visible { outline: 3px solid var(--color-primary); outline-offset: -3px; }
 .picture { position: relative; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: var(--color-surface-muted); }

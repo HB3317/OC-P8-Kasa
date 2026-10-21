@@ -1,4 +1,5 @@
 import Image from "next/image";
+import FavoriteButton from "@/components/atoms/FavoriteButton/FavoriteButton";
 import Link from "next/link";
 import type { Property } from "@/types/property";
 import styles from "@/styles/molecules/PropertyCard.module.css";
@@ -30,6 +31,7 @@ export default function PropertyCard({ property }: Props) {
           </p>
         </div>
       </Link>
+      <FavoriteButton propertyId={String(property.id)} />
     </article>
   );
 }

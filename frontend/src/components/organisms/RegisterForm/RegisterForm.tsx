@@ -2,6 +2,8 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { safeRedirect } from "@/utils/safeRedirect";
+import { synchronizeGuestFavorites } from "@/services/favoriteService";
 import Link from "next/link";
 import { HttpError } from "@/services/httpClient";
 import { register } from "@/services/clientAuthService";
@@ -9,7 +11,7 @@ import { register } from "@/services/clientAuthService";
 import FormField from "@/components/atoms/FormField/FormField";
 import styles from "@/styles/organisms/RegisterForm.module.css";
 
-export default function RegisterForm() {
+export default function RegisterForm({ nextPath }: { nextPath?: string }) {
   const router = useRouter();
 
   const [notice, setNotice] = useState("");
@@ -41,7 +43,8 @@ export default function RegisterForm() {
     try {
       await register({ name: `${firstName} ${lastName}`.trim(), email, password });
 
-      router.replace("/");
+      await synchronizeGuestFavorites().catch(() => {});
+      router.replace(safeRedirect(nextPath));
       router.refresh();
     } catch (error) {
       setNotice(error instanceof HttpError && error.status !== 503
@@ -128,7 +131,7 @@ export default function RegisterForm() {
 
         <p className={styles.loginLink}>
           Déjà membre ?{" "}
-          <Link href="/login">Se connecter</Link>
+          <Link href={`/login?next=${encodeURIComponent(safeRedirect(nextPath))}`}>Se connecter</Link>
         </p>
       </form>
     </section>

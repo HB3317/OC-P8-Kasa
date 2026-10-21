@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "Créez votre compte sur Kasa.",
 };
 
-export default function RegisterPage() {
-  return <RegisterTemplate />;
+export default async function RegisterPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
+  const { next } = await searchParams;
+  return <RegisterTemplate nextPath={next} />;
 }

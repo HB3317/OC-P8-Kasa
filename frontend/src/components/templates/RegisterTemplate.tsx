@@ -4,13 +4,13 @@ import Footer from "@/components/organisms/Footer/Footer";
 
 import styles from "@/styles/templates/RegisterTemplate.module.css";
 
-export default function RegisterTemplate() {
+export default function RegisterTemplate({ nextPath }: { nextPath?: string }) {
   return (
     <div className={styles.page}>
       <Header />
 
       <main className={styles.main}>
-        <RegisterForm />
+        <RegisterForm nextPath={nextPath} />
       </main>
 
       <Footer />

@@ -1,0 +1,4 @@
+.page { min-height: 100vh; background: var(--color-background-soft); }
+.main { width: min(1114px, calc(100% - 32px)); margin: 36px auto; display: grid; gap: 20px; }
+.imageArea { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 16px; background: var(--color-surface-muted); }
+.image { object-fit: cover; }
