@@ -11,7 +11,7 @@ export function useMobileMenu(pathname: string) {
     open: false,
   });
 
-  // Un menu ouvert sur une ancienne route doit être considéré fermé.
+  // A menu opened on a previous route should be considered closed.
   const isOpen =
     menuState.pathname === pathname && menuState.open;
 

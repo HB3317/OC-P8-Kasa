@@ -1,19 +1,48 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { httpClient, HttpError } from "@/services/httpClient";
+import type { AuthUser } from "@/types/auth";
 
 import FormField from "@/components/atoms/FormField/FormField";
 import styles from "@/styles/organisms/LoginForm.module.css";
 
 export default function LoginForm() {
-  const [notice, setNotice] = useState("");
+  const router = useRouter();
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const [notice, setNotice] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    // L'appel au backend sera ajouté pendant l'étape authentification.
-    setNotice("La connexion au serveur n'est pas encore activée.");
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setNotice("");
+
+    const form = new FormData(event.currentTarget);
+
+    try {
+      await httpClient.post<{ user: AuthUser }, { email: string; password: string }>(
+        "/api/auth/login",
+        {
+            email: String(form.get("email") ?? ""),
+            password: String(form.get("password") ?? ""),
+          },
+      );
+
+      router.replace("/");
+      router.refresh();
+    } catch (error) {
+      setNotice(error instanceof HttpError && error.status !== 503
+        ? error.message
+        : "Impossible de contacter le serveur.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -48,12 +77,16 @@ export default function LoginForm() {
           />
         </div>
 
-        <button type="submit" className={styles.submit}>
-          Se connecter
+        <button
+          type="submit"
+          className={styles.submit}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Connexion..." : "Se connecter"}
         </button>
 
         {notice && (
-          <p className={styles.notice} role="status">
+          <p className={styles.notice} role="alert">
             {notice}
           </p>
         )}
@@ -65,7 +98,7 @@ export default function LoginForm() {
 
           <p>
             Pas encore de compte ?{" "}
-            <Link href="/signin">Inscrivez-vous</Link>
+            <Link href="/register">Inscrivez-vous</Link>
           </p>
         </div>
       </form>

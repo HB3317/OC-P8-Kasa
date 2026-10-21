@@ -1,25 +1,68 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { httpClient, HttpError } from "@/services/httpClient";
+import type { AuthUser } from "@/types/auth";
 
 import FormField from "@/components/atoms/FormField/FormField";
-import styles from "@/styles/organisms/SignInForm.module.css";
+import styles from "@/styles/organisms/RegisterForm.module.css";
 
-export default function SignInForm() {
+export default function RegisterForm() {
+  const router = useRouter();
+
   const [notice, setNotice] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    // L'inscription réelle sera intégrée avec le backend.
-    setNotice("L'inscription sera disponible prochainement.");
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setNotice("");
+
+    const form = new FormData(event.currentTarget);
+
+    const lastName = String(form.get("lastName") ?? "").trim();
+    const firstName = String(form.get("firstName") ?? "").trim();
+    const email = String(form.get("email") ?? "").trim();
+    const password = String(form.get("password") ?? "");
+
+    if (password.length < 6) {
+      setNotice(
+        "Le mot de passe doit contenir au moins 6 caractères.",
+      );
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      await httpClient.post<{ user: AuthUser }, { name: string; email: string; password: string }>(
+        "/api/auth/register",
+        {
+            name: `${firstName} ${lastName}`.trim(),
+            email,
+            password,
+          },
+      );
+
+      router.replace("/");
+      router.refresh();
+    } catch (error) {
+      setNotice(error instanceof HttpError && error.status !== 503
+        ? error.message
+        : "Impossible de contacter le serveur.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
-    <section className={styles.card} aria-labelledby="signin-title">
+    <section className={styles.card} aria-labelledby="register-title">
       <div className={styles.intro}>
-        <h1 id="signin-title" className={styles.title}>
+        <h1 id="register-title" className={styles.title}>
           Rejoignez la communauté Kasa
         </h1>
 
@@ -67,11 +110,7 @@ export default function SignInForm() {
         </div>
 
         <label className={styles.terms}>
-          <input
-            name="acceptTerms"
-            type="checkbox"
-            required
-          />
+          <input name="acceptTerms" type="checkbox" required />
           <span>
             J&apos;accepte les{" "}
             <span className={styles.termsText}>
@@ -80,12 +119,16 @@ export default function SignInForm() {
           </span>
         </label>
 
-        <button type="submit" className={styles.submit}>
-          S&apos;inscrire
+        <button
+          type="submit"
+          className={styles.submit}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Inscription..." : "S'inscrire"}
         </button>
 
         {notice && (
-          <p className={styles.notice} role="status">
+          <p className={styles.notice} role="alert">
             {notice}
           </p>
         )}
