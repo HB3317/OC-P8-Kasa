@@ -31,3 +31,7 @@ export function register(
     registration,
   );
 }
+
+export function logout(): Promise<{ ok: boolean }> {
+  return httpClient.post<{ ok: boolean }, undefined>("/api/auth/logout", undefined);
+}

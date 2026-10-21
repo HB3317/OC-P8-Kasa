@@ -1,19 +1,61 @@
-.wrapper { position: absolute; z-index: 2; top: 12px; right: 12px; }
-.button { display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--color-white); cursor: pointer; }
-.button:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 2px; }
-.button:disabled { cursor: wait; opacity: .7; }
-.button svg { width: 22px; height: 22px; }
-.active path {
-  fill: var(--color-primary);
-  stroke: var(--color-primary);
+.wrapper {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
 }
 
-.inactive path:first-child {
+.button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: var(--color-white);
+  cursor: pointer;
+}
+
+.button[aria-pressed="true"] {
+  background: var(--color-primary);
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.inactive path {
+  fill: var(--color-grey-medium);
+  stroke: var(--color-grey-medium);
+}
+
+.active path:first-child {
   fill: var(--color-white);
+  fill-opacity: 0.7;
 }
 
-.inactive path:last-child {
-  fill: var(--color-black);
-  stroke: var(--color-black);
+.active path:last-child {
+  fill: var(--color-white);
+  stroke: var(--color-grey-light);
 }
-.error { display: block; width: 175px; padding: 8px; background: var(--color-white); color: var(--color-primary); font-size: 12px; }
+
+.error {
+  display: block;
+  width: 175px;
+  padding: 8px;
+  background: var(--color-white);
+  color: var(--color-primary);
+  font-size: 12px;
+}
