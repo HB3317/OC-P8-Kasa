@@ -1,0 +1,13 @@
+.card { display:flex; flex-direction:column; gap:24px; padding:24px; border:1px solid var(--color-surface-muted); border-radius:10px; background:var(--color-white); }
+.heading { font-size:15px; font-weight:600; }
+.identity { display:flex; align-items:center; gap:16px; min-width:0; }
+.avatar,.avatarPlaceholder { position:relative; flex:0 0 80px; width:80px; height:80px; overflow:hidden; border-radius:10px; background:var(--color-surface-muted); }
+.avatarImage { object-fit:cover; }
+.avatarPlaceholder { display:grid; place-items:center; color:var(--color-text-secondary); font-size:30px; }
+.name { flex:1; min-width:0; font-size:15px; overflow-wrap:anywhere; }
+.rating { display:inline-flex; align-items:center; gap:5px; padding:8px; border-radius:9px; background:var(--color-surface-muted); font-size:14px; }
+.star { color:var(--color-primary); font-size:19px; }
+.actions { display:grid; gap:8px; }
+.button { width:100%; min-height:37px; padding:8px 12px; border:0; border-radius:10px; background:var(--color-primary); color:var(--color-on-primary); font-size:13px; cursor:pointer; }
+.button:focus-visible { outline:3px solid var(--color-black); outline-offset:3px; }
+@media (max-width:800px) { .card { padding:24px; } }

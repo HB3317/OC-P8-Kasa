@@ -10,6 +10,11 @@ export type Property = {
 };
 
 export type PropertyDetail = Property & {
+  host?: {
+    id: number;
+    name: string;
+    picture: string | null;
+  };
   description: string | null;
   pictures: string[];
   equipments: string[];

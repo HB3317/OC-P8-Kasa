@@ -1,0 +1,4 @@
+.heading { margin-bottom:16px; font-size:14px; font-weight:600; }
+.grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; width:min(100%,330px); margin:0; padding:0; list-style:none; }
+.item { display:flex; align-items:center; justify-content:center; min-width:0; min-height:34px; padding:7px 5px; border-radius:5px; background:var(--color-surface-muted); color:var(--color-text-secondary); font-size:12px; line-height:1.25; text-align:center; overflow-wrap:anywhere; }
+.empty { font-size:13px; color:var(--color-text-secondary); }
