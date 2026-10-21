@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "Découvrez les logements disponibles sur Kasa.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const properties = await getProperties();
 
