@@ -1,8 +1,8 @@
-import { redirect } from "next/navigation";
-import { getSessionUser } from "@/services/authService";
-import Header from "@/components/organisms/Header/Header";
-
-export default async function NewPropertyPage() {
-  if (!await getSessionUser()) redirect("/login?next=%2Fproperties%2Fnew");
-  return <><Header /><main><h1>Ajouter un logement</h1><p>Formulaire de publication à développer.</p></main></>;
+import {redirect} from 'next/navigation';
+import {getSessionUser} from '@/services/authService';
+import NewPropertyTemplate from '@/components/templates/NewPropertyTemplate';
+export default async function NewPropertyPage(){
+ const user=await getSessionUser();
+ if(!user)redirect('/login?next=%2Fproperties%2Fnew');
+ return <NewPropertyTemplate user={user}/>;
 }

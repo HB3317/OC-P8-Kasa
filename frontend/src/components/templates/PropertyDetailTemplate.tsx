@@ -23,7 +23,7 @@ export default function PropertyDetailTemplate({ property }: Props) {
         <Link className={styles.backLink} href="/">← Retour aux annonces</Link>
         <div className={styles.layout}>
           <div className={styles.primary}>
-            <PropertyCarousel images={images} title={property.title}>
+            <PropertyCarousel images={images.map(image => image.startsWith("/uploads/") ? `/api/property-images/${encodeURIComponent(image.slice(9))}` : image)} title={property.title}>
               <FavoritesProvider><FavoriteButton propertyId={String(property.id)} /></FavoritesProvider>
             </PropertyCarousel>
             <PropertyInformation property={property} />

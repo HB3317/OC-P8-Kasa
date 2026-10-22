@@ -12,7 +12,7 @@ export default function PropertyHost({ host, rating }: Props) {
         <div className={styles.identity}>
           {host?.picture ? (
             <div className={styles.avatar}>
-              <Image src={host.picture} alt="" fill sizes="80px" className={styles.avatarImage} />
+              <Image src={host.picture.startsWith("/uploads/") ? `/api/property-images/${encodeURIComponent(host.picture.slice(9))}` : host.picture} alt="" fill sizes="80px" className={styles.avatarImage} />
             </div>
           ) : <div className={styles.avatarPlaceholder} aria-hidden="true">⌂</div>}
           <p className={styles.name}>{host?.name ?? "Hôte non renseigné"}</p>

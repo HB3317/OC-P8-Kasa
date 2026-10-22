@@ -13,7 +13,7 @@ export default function PropertyCard({ property }: Props) {
         <div className={styles.picture}>
           {property.cover ? (
             <Image
-              src={property.cover}
+              src={property.cover.startsWith("/uploads/") ? `/api/property-images/${encodeURIComponent(property.cover.slice(9))}` : property.cover}
               alt={property.title}
               fill
               sizes="(max-width: 800px) calc(100vw - 32px), (max-width: 1200px) 45vw, 360px"
