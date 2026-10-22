@@ -1,10 +1,14 @@
+"use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import type { PropertyDetail } from "@/types/property";
 import styles from "@/styles/organisms/PropertyHost.module.css";
 
-type Props = { host: PropertyDetail["host"]; rating: number | null };
+type Props = { host: PropertyDetail["host"]; rating: number | null; propertyId: string };
 
-export default function PropertyHost({ host, rating }: Props) {
+export default function PropertyHost({ host, rating, propertyId }: Props) {
+  const router = useRouter();
+  const contact = () => router.push(`/messages?property=${encodeURIComponent(propertyId)}`);
   return (
     <aside aria-label="Informations sur l’hôte">
       <section className={styles.card} aria-labelledby="host-heading">
@@ -24,8 +28,8 @@ export default function PropertyHost({ host, rating }: Props) {
           )}
         </div>
         <div className={styles.actions}>
-          <button type="button" className={styles.button}>Contacter l&apos;hôte</button>
-          <button type="button" className={styles.button}>Envoyer un message</button>
+          <button type="button" className={styles.button} onClick={contact}>Contacter l&apos;hôte</button>
+          <button type="button" className={styles.button} onClick={contact}>Envoyer un message</button>
         </div>
       </section>
     </aside>

@@ -161,3 +161,11 @@
 @media (max-width: 800px) {
   .desktopLogoMenu { display: none; }
 }
+
+/* Menu utilisateur rattaché au pictogramme Kasa sur mobile. */
+.mobileLogoMenu{display:none;position:relative}
+@media(max-width:800px){
+ .mobileLogoMenu{display:inline-flex;align-items:center}
+ .mobileLogo{display:inline-flex;padding:0;border:0;background:transparent;cursor:pointer}
+ .mobileLogoMenu .authMenu{left:0;transform:none;top:calc(100% + 8px);z-index:110}
+}

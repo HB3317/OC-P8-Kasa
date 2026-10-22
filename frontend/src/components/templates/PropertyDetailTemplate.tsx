@@ -28,7 +28,7 @@ export default function PropertyDetailTemplate({ property }: Props) {
             </PropertyCarousel>
             <PropertyInformation property={property} />
           </div>
-          <PropertyHost host={property.host} rating={property.rating_avg} />
+          <PropertyHost host={property.host} rating={property.rating_avg} propertyId={String(property.id)} />
         </div>
       </main>
       <Footer />

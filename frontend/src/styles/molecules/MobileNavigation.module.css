@@ -56,31 +56,3 @@
     color: var(--color-on-primary);
   }
 }
-
-@media (max-width: 800px) {
-  .authAction {
-    margin-top: auto;
-    padding-top: 24px;
-  }
-
-  .authAction a,
-  .authAction button,
-  .authAction > span {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-height: 56px;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: var(--color-text-primary);
-    font: inherit;
-    font-size: 18px;
-    text-decoration: none;
-    text-align: left;
-  }
-
-  .authAction button { cursor: pointer; }
-  .authAction button:disabled { cursor: wait; opacity: 0.7; }
-  .authAction .authError { color: var(--color-primary); font-size: 12px; }
-}

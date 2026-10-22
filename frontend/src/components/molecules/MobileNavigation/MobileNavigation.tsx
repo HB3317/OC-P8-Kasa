@@ -5,14 +5,10 @@ type MobileNavigationProps = {
   pathname: string;
   isOpen: boolean;
   onNavigate: () => void;
-  authenticated: boolean | null;
-  isLoggingOut: boolean;
-  logoutError: string;
-  onLogout: () => void;
 };
 
 export default function MobileNavigation({
-  pathname, isOpen, onNavigate, authenticated, isLoggingOut, logoutError, onLogout,
+  pathname, isOpen, onNavigate,
 }: MobileNavigationProps) {
   return (
     <nav id="mobile-navigation" aria-label="Navigation mobile"
@@ -29,18 +25,7 @@ export default function MobileNavigation({
         Ajouter un logement
       </NavLink>
 
-      <div className={styles.authAction}>
-        {authenticated === true ? (
-          <button type="button" disabled={isLoggingOut} onClick={onLogout}>
-            {isLoggingOut ? "Déconnexion..." : "Se déconnecter"}
-          </button>
-        ) : authenticated === false ? (
-          <NavLink href="/login" isActive={pathname === "/login"} onClick={onNavigate}>
-            Se connecter
-          </NavLink>
-        ) : <span>Vérification...</span>}
-        {logoutError && <span className={styles.authError} role="alert">{logoutError}</span>}
-      </div>
+
     </nav>
   );
 }

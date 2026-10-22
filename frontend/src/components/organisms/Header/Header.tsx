@@ -23,9 +23,11 @@ export default function Header() {
   const { isOpen, toggleMenu, closeMenu } = useMobileMenu(pathname);
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
+  const [mobileAuthOpen, setMobileAuthOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState("");
   const desktopMenuRef = useRef<HTMLDivElement>(null);
+  const mobileAuthRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -60,6 +62,25 @@ export default function Header() {
     };
   }, [desktopMenuOpen]);
 
+  useEffect(() => {
+    if (!mobileAuthOpen) return;
+    function onPointerDown(event: PointerEvent) {
+      if (!mobileAuthRef.current?.contains(event.target as Node)) setMobileAuthOpen(false);
+    }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setMobileAuthOpen(false);
+        mobileAuthRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+      }
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [mobileAuthOpen]);
+
   const handleLogout = useCallback(async () => {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
@@ -68,6 +89,7 @@ export default function Header() {
       await logout();
       setAuthenticated(false);
       setDesktopMenuOpen(false);
+      setMobileAuthOpen(false);
       closeMenu();
       router.replace("/");
       router.refresh();
@@ -120,18 +142,36 @@ export default function Header() {
           <HeaderActions pathname={pathname} />
         </div>
 
-        <div className={styles.mobileLogo}>
-          <LogoPicto aria-hidden="true" />
+        <div className={styles.mobileLogoMenu} ref={mobileAuthRef}>
+          <button type="button" className={styles.mobileLogo}
+            aria-label="Kasa - Menu de connexion"
+            aria-haspopup="menu" aria-expanded={mobileAuthOpen} aria-controls="mobile-auth-menu"
+            onClick={() => { closeMenu(); setMobileAuthOpen(open => !open); }}>
+            <LogoPicto aria-hidden="true" />
+          </button>
+          {mobileAuthOpen && (
+            <div id="mobile-auth-menu" className={styles.authMenu} role="menu">
+              {authenticated === true ? (
+                <button type="button" role="menuitem" disabled={isLoggingOut}
+                  onClick={() => void handleLogout()}>
+                  {isLoggingOut ? "Déconnexion..." : "Se déconnecter"}
+                </button>
+              ) : authenticated === false ? (
+                <Link role="menuitem" href="/login" onClick={() => setMobileAuthOpen(false)}>
+                  Se connecter
+                </Link>
+              ) : <span className={styles.authLoading}>Vérification...</span>}
+              {logoutError && <span className={styles.authError} role="alert">{logoutError}</span>}
+            </div>
+          )}
         </div>
 
         <div className={styles.mobileToggle}>
-          <MenuToggleButton isOpen={isOpen} onToggle={toggleMenu} controlsId="mobile-navigation" />
+          <MenuToggleButton isOpen={isOpen} onToggle={() => { setMobileAuthOpen(false); toggleMenu(); }} controlsId="mobile-navigation" />
         </div>
       </div>
 
-      <MobileNavigation pathname={pathname} isOpen={isOpen} onNavigate={closeMenu}
-        authenticated={authenticated} isLoggingOut={isLoggingOut}
-        logoutError={logoutError} onLogout={() => void handleLogout()} />
+      <MobileNavigation pathname={pathname} isOpen={isOpen} onNavigate={closeMenu} />
     </header>
   );
 }
