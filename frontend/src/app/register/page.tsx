@@ -3,6 +3,7 @@ import RegisterTemplate from "@/components/templates/RegisterTemplate";
 
 export const metadata: Metadata = {
   title: "Inscription | Kasa",
+  robots: { index: false, follow: false },
   description: "Créez votre compte sur Kasa.",
 };
 

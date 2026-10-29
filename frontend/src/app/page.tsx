@@ -5,6 +5,7 @@ import { getProperties } from "@/services/propertyService";
 export const metadata: Metadata = {
   title: "Accueil | Kasa",
   description: "Découvrez les logements disponibles sur Kasa.",
+  alternates: { canonical: "/" },
 };
 
 export const dynamic = "force-dynamic";

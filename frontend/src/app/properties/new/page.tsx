@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 import {redirect} from 'next/navigation';
 import {getSessionUser} from '@/services/authService';
 import NewPropertyTemplate from '@/components/templates/NewPropertyTemplate';

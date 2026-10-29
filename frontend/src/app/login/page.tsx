@@ -3,6 +3,7 @@ import LoginTemplate from "@/components/templates/LoginTemplate";
 
 export const metadata: Metadata = {
   title: "Connexion | Kasa",
+  robots: { index: false, follow: false },
   description: "Connectez-vous à votre compte Kasa.",
 };
 

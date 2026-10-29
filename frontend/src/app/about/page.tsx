@@ -4,6 +4,7 @@ import AboutTemplate from "@/components/templates/AboutTemplate";
 export const metadata: Metadata = {
   title: "À propos | Kasa",
   description: "Découvrez la mission et les engagements de Kasa.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
