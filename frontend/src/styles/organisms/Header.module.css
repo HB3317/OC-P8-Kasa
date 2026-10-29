@@ -2,7 +2,7 @@
 .header {
   width: 100%;
   padding-block: 16px;
-  background-color: var(--color-background);
+  background-color: var(--color-background-soft);
 }
 
 .container {
@@ -24,12 +24,12 @@
 
 .desktopNavigation {
   flex: 0 0 auto;
-  margin-right: 54px;
+  margin-right: 43px;
 }
 
 .desktopActions {
   flex: 0 0 auto;
-  margin-left: 52px;
+  margin-left: 41px;
 }
 
 .desktopLogo {
@@ -112,60 +112,17 @@
   }
 }
 
-.desktopLogoMenu {
-  position: relative;
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-}
 
-.authMenu {
-  position: absolute;
-  top: calc(100% + 12px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
-  min-width: 165px;
-  padding: 8px;
-  border: 1px solid var(--color-grey-light);
-  border-radius: 10px;
-  background: var(--color-background);
-  box-shadow: 0 4px 8px color-mix(in srgb, var(--color-black) 8%, transparent);
-}
-
-.authMenu a,
-.authMenu button,
-.authLoading {
-  display: block;
-  width: 100%;
-  padding: 10px 12px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--color-text-primary);
-  font: inherit;
-  font-size: 14px;
-  text-align: left;
-  text-decoration: none;
-}
-
-.authMenu a:hover,
-.authMenu button:hover {
-  background: var(--color-surface-muted);
-}
-
-.authMenu button { cursor: pointer; }
-.authMenu button:disabled { cursor: wait; opacity: 0.7; }
-.authError { display: block; color: var(--color-primary); font-size: 12px; padding: 6px; }
-
+/* Lien logo mobile, sans menu secondaire. */
 @media (max-width: 800px) {
-  .desktopLogoMenu { display: none; }
+  .mobileLogo { padding: 0; text-decoration: none; }
 }
 
-/* Menu utilisateur rattaché au pictogramme Kasa sur mobile. */
-.mobileLogoMenu{display:none;position:relative}
-@media(max-width:800px){
- .mobileLogoMenu{display:inline-flex;align-items:center}
- .mobileLogo{display:inline-flex;padding:0;border:0;background:transparent;cursor:pointer}
- .mobileLogoMenu .authMenu{left:0;transform:none;top:calc(100% + 8px);z-index:110}
+.authError {
+  margin: 4px auto;
+  max-width: 790px;
+  padding: 4px 16px;
+  color: var(--color-primary);
+  font-size: 12px;
+  text-align: right;
 }
