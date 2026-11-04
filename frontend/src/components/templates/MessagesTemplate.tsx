@@ -3,11 +3,11 @@
 import ConversationsSidebar from "@/components/organisms/ConversationsSidebar/ConversationsSidebar";
 import ConversationThread from "@/components/organisms/ConversationThread/ConversationThread";
 import { useMessagesInbox } from "@/hooks/useMessagesInbox";
-import styles from "@/styles/organisms/MessagesInbox.module.css";
+import styles from "@/styles/templates/MessagesTemplate.module.css";
 
 type Props = { userId: number };
 
-export default function MessagesInbox({ userId }: Props) {
+export default function MessagesTemplate({ userId }: Props) {
   const inbox = useMessagesInbox();
 
   return (

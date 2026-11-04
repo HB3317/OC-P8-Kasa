@@ -1,5 +1,5 @@
 import type { FormEvent } from "react";
-import styles from "@/styles/organisms/MessagesInbox.module.css";
+import styles from "@/styles/templates/MessagesTemplate.module.css";
 
 type Props = {
   draft: string;

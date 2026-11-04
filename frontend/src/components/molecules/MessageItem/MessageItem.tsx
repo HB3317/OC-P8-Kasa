@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { Message } from "@/types/messaging";
 import { resolveUploadImage } from "@/utils/resolveUploadImage";
 import { messageTime } from "@/utils/messageDates";
-import styles from "@/styles/organisms/MessagesInbox.module.css";
+import styles from "@/styles/templates/MessagesTemplate.module.css";
 
 type Props = {
   message: Message;

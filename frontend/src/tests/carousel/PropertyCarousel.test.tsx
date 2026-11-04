@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import PropertyCarousel from "@/components/molecules/PropertyCarousel/PropertyCarousel";
+import PropertyCarousel from "@/components/organisms/PropertyCarousel/PropertyCarousel";
 
 // Le test porte sur le carrousel, pas sur l'optimisation des images Next.js.
 vi.mock("next/image", () => ({

@@ -1,6 +1,6 @@
 import type { Conversation } from "@/types/messaging";
 import ConversationItem from "@/components/molecules/ConversationItem/ConversationItem";
-import styles from "@/styles/organisms/MessagesInbox.module.css";
+import styles from "@/styles/templates/MessagesTemplate.module.css";
 
 type Props = {
   conversations: Conversation[];

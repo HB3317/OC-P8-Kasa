@@ -3,7 +3,7 @@ import type { Conversation, Message } from "@/types/messaging";
 import { messageDay } from "@/utils/messageDates";
 import MessageItem from "@/components/molecules/MessageItem/MessageItem";
 import MessageComposer from "@/components/molecules/MessageComposer/MessageComposer";
-import styles from "@/styles/organisms/MessagesInbox.module.css";
+import styles from "@/styles/templates/MessagesTemplate.module.css";
 
 type Props = {
   selected?: Conversation;

@@ -4,7 +4,7 @@ import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import PropertyLightbox from "@/components/molecules/PropertyLightbox/PropertyLightbox";
 import ChevronIcon from "@/components/quarks/ChevronIcon";
 import Image from "next/image";
-import styles from "@/styles/molecules/PropertyCarousel.module.css";
+import styles from "@/styles/organisms/PropertyCarousel.module.css";
 
 type Props = {
   images: string[];
