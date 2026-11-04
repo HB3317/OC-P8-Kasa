@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Message } from "@/types/messaging";
+import { resolveUploadImage } from "@/utils/resolveUploadImage";
 import { messageTime } from "@/utils/messageDates";
 import styles from "@/styles/organisms/MessagesInbox.module.css";
 
@@ -17,7 +18,7 @@ export default function MessageItem({ message, userId, peerName, peerPicture }: 
     <div className={`${styles.messageRow} ${mine ? styles.mine : ""}`}>
       <span className={styles.messageAvatar} aria-hidden="true">
         {!mine && peerPicture && (
-          <Image src={peerPicture} alt="" fill sizes="25px" unoptimized className={styles.avatarImage} />
+          <Image src={resolveUploadImage(peerPicture)} alt="" fill sizes="25px" unoptimized className={styles.avatarImage} />
         )}
       </span>
       <div className={styles.messageMain}>

@@ -92,9 +92,7 @@ export default function LoginForm({ nextPath }: { nextPath?: string }) {
         )}
 
         <div className={styles.links}>
-          <Link href="/forgot-password">
-            Mot de passe oublié
-          </Link>
+          <span className={styles.forgotPassword}>Mot de passe oublié</span>
 
           <p>
             Pas encore de compte ?{" "}

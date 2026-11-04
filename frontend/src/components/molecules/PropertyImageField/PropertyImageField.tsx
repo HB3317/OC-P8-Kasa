@@ -14,7 +14,7 @@ export default function PropertyImageField({label,files,onChange,multiple=false,
         {files.length ? files.map((file,i)=><Preview key={`${file.name}-${file.lastModified}-${i}`} file={file} label={label} index={i} onRemove={()=>onChange(files.filter((_,n)=>n!==i))}/>) : <span className={styles.empty} aria-hidden="true"/>}
       </div>
       <button type="button" className={styles.add} aria-label={`Ajouter ${label.toLowerCase()}`} onClick={()=>input.current?.click()} disabled={files.length>=max}><PlusIcon/></button>
-      <input id={inputId} ref={input} type="file" accept="image/jpeg,image/png,image/webp" multiple={multiple} aria-describedby={hint ? hintId : undefined} className={styles.hidden}
+      <input id={inputId} ref={input} type="file" accept="image/jpeg,image/png,image/webp" multiple={multiple} aria-describedby={hint ? hintId : undefined} tabIndex={-1} className={styles.hidden}
         onChange={e=>{const selected=Array.from(e.target.files||[]);onChange(multiple?[...files,...selected].slice(0,max):selected.slice(0,1));e.target.value='';}}/>
     </div>
     {hint&&<p className={styles.hint} id={hintId}>{hint}</p>}

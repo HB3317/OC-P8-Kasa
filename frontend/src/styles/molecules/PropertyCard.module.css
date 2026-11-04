@@ -1,6 +1,7 @@
 .card { position: relative; min-width: 0; overflow: hidden; border-radius: 12px; background: var(--color-white); }
 .link { display: flex; flex-direction: column; height: 100%; }
-.link:focus-visible { outline: 3px solid var(--color-primary); outline-offset: -3px; }
+.link:focus-visible { outline: none; }
+.card:has(> .link:focus-visible)::after { content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit; box-shadow: inset 0 0 0 3px var(--color-primary); pointer-events: none; }
 .picture { position: relative; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: var(--color-surface-muted); }
 .image { object-fit: cover; transition: transform 180ms ease; }
 .link:hover .image { transform: scale(1.025); }

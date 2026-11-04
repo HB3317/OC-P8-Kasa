@@ -24,3 +24,7 @@
  .steps { grid-template-columns: 1fr; gap: 10px; }
  .step { min-height: 135px; }
 }
+
+/* Réserve l’espace disponible aux favoris avant leur chargement. */
+.favoritesPage { display: flex; flex-direction: column; }
+.favoritesPage > main { flex: 1; }

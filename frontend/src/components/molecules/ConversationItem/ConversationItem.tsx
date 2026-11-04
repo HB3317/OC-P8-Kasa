@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Conversation } from "@/types/messaging";
+import { resolveUploadImage } from "@/utils/resolveUploadImage";
 import { messageTime } from "@/utils/messageDates";
 import styles from "@/styles/organisms/MessagesInbox.module.css";
 
@@ -22,7 +23,7 @@ export default function ConversationItem({ conversation, selected, onOpen }: Pro
     >
       <span className={styles.avatar} aria-hidden="true">
         {peer_picture && (
-          <Image src={peer_picture} alt="" fill sizes="36px" unoptimized className={styles.avatarImage} />
+          <Image src={resolveUploadImage(peer_picture)} alt="" fill sizes="36px" unoptimized className={styles.avatarImage} />
         )}
       </span>
       <span className={styles.preview}>

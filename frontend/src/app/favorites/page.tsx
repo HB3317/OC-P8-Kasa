@@ -7,7 +7,7 @@ import { FavoritesProvider } from "@/hooks/useFavorites";
 import styles from "@/styles/templates/HomeTemplate.module.css";
 
 export default function FavoritesPage() {
-  return <div className={styles.page}><Header /><main className={styles.main}>
+  return <div className={`${styles.page} ${styles.favoritesPage}`}><Header /><main className={styles.main}>
     <h1>Mes favoris</h1>
     <FavoritesProvider><FavoritesList /></FavoritesProvider>
   </main><Footer /></div>;
