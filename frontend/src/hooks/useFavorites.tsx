@@ -8,6 +8,7 @@ type FavoritesContextValue = {
   isReady: boolean;
   toggle: (id: string) => Promise<void>;
   error: string;
+  retry: () => void;
 };
 const FavoritesContext = createContext<FavoritesContextValue | null>(null);
 
@@ -16,10 +17,18 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [isReady, setReady] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
   const [error, setError] = useState("");
+  const [retryCount, setRetryCount] = useState(0);
+
+  const retry = useCallback(() => {
+    setError("");
+    setReady(false);
+    setRetryCount((count) => count + 1);
+  }, []);
 
   useEffect(() => {
     let active = true;
     async function initialize() {
+      setError("");
       const local = getGuestFavorites();
       try {
         const session = await favoriteService.session();
@@ -34,7 +43,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     }
     void initialize();
     return () => { active = false; };
-  }, []);
+  }, [retryCount]);
 
   const toggle = useCallback(async (id: string) => {
     if (!isReady) return;
@@ -53,7 +62,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     } catch { setError("Impossible de modifier vos favoris."); }
   }, [authenticated, ids, isReady]);
 
-  return <FavoritesContext.Provider value={{ ids, isReady, toggle, error }}>{children}</FavoritesContext.Provider>;
+  return <FavoritesContext.Provider value={{ ids, isReady, toggle, error, retry }}>{children}</FavoritesContext.Provider>;
 }
 
 export function useFavorites() {

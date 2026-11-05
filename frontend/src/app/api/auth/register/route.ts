@@ -1,4 +1,5 @@
 import { checkOrigin } from "@/utils/checkOrigin";
+import { sendRegistrationConfirmation } from "@/services/emailService";
 import { NextResponse } from "next/server";
 import {
   AuthError,
@@ -40,6 +41,13 @@ export async function POST(request: Request) {
     });
 
     await createSession(token);
+
+    // Une erreur du service email ne doit jamais invalider une inscription réussie.
+    try {
+      await sendRegistrationConfirmation({ name, email });
+    } catch (emailError) {
+      console.error("[email] Confirmation non envoyée :", emailError);
+    }
 
     return NextResponse.json(
       { user },
