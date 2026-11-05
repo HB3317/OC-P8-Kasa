@@ -12,6 +12,10 @@ type FavoritesContextValue = {
 };
 const FavoritesContext = createContext<FavoritesContextValue | null>(null);
 
+/**
+ * Fournit aux composants la liste des favoris et leur synchronisation entre stockage local et compte connecté.
+ * La synchronisation échouée conserve les favoris locaux et expose un message d’erreur.
+ */
 export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [ids, setIds] = useState<string[]>([]);
   const [isReady, setReady] = useState(false);
@@ -65,6 +69,10 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   return <FavoritesContext.Provider value={{ ids, isReady, toggle, error, retry }}>{children}</FavoritesContext.Provider>;
 }
 
+/**
+ * Accède au contexte des favoris et signale une utilisation hors du fournisseur.
+ * @returns {FavoritesContextValue} État des favoris et actions disponibles.
+ */
 export function useFavorites() {
   const context = useContext(FavoritesContext);
   if (!context) throw new Error("useFavorites requires FavoritesProvider");

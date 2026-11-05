@@ -11,6 +11,9 @@ import { register } from "@/services/clientAuthService";
 import FormField from "@/components/atoms/FormField/FormField";
 import styles from "@/styles/organisms/RegisterForm.module.css";
 
+/**
+ * Valide le formulaire d’inscription et transmet les données au service d’authentification.
+ */
 export default function RegisterForm({ nextPath }: { nextPath?: string }) {
   const router = useRouter();
 

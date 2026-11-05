@@ -8,6 +8,9 @@ import styles from "@/styles/templates/HomeTemplate.module.css";
 
 type Props = { properties: Property[] };
 
+/**
+ * Assemble la page d’accueil et la grille des annonces disponibles.
+ */
 export default function HomeTemplate({ properties }: Props) {
   return (
     <div className={styles.page}>

@@ -11,6 +11,9 @@ type AuthActionMenuProps = {
   onLogout: () => void;
 };
 
+/**
+ * Gère l’ouverture et la fermeture du menu de compte utilisateur, notamment au clavier.
+ */
 export default function AuthActionMenu({ authenticated, isLoggingOut, onLogout }: AuthActionMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);

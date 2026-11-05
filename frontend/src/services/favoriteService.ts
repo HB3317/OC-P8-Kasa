@@ -5,6 +5,10 @@ const STORAGE_KEY = "kasa_guest_favorites";
 
 type Session = { authenticated: boolean };
 
+/**
+ * Lit les favoris des visiteurs dans le stockage local et élimine les identifiants invalides ou répétés.
+ * @returns {string[]} Identifiants enregistrés, ou liste vide en cas de données illisibles.
+ */
 export function getGuestFavorites(): string[] {
   try {
     const value: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
@@ -12,6 +16,9 @@ export function getGuestFavorites(): string[] {
   } catch { return []; }
 }
 
+/**
+ * Persiste une liste dédupliquée de favoris pour un visiteur non connecté.
+ */
 export function saveGuestFavorites(ids: string[]) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify([...new Set(ids)]));
 }
@@ -23,10 +30,14 @@ export const favoriteService = {
   remove: (id: string) => httpClient.delete<{ ok: boolean }>(`/api/favorites/${encodeURIComponent(id)}`),
 };
 
+/**
+ * Transfère les favoris locaux vers le compte connecté, sans supprimer ceux dont l’envoi a échoué.
+ * Les identifiants sont retirés du stockage local un par un après confirmation du serveur.
+ */
 export async function synchronizeGuestFavorites(): Promise<void> {
   const ids = getGuestFavorites();
   if (!ids.length) return;
-  // Keep unsynchronized favorites locally if any request fails.
+  // Conserver localement les favoris qui n’ont pas pu être synchronisés.
   const saved = await favoriteService.list();
   const existing = new Set(saved.map((property) => String(property.id)));
   const remaining = [...ids];
@@ -36,7 +47,7 @@ export async function synchronizeGuestFavorites(): Promise<void> {
       remaining.splice(remaining.indexOf(id), 1);
       saveGuestFavorites(remaining);
     } catch {
-      // A failed item remains local and can be retried later.
+      // L’identifiant reste disponible pour une nouvelle tentative.
     }
   }
 }

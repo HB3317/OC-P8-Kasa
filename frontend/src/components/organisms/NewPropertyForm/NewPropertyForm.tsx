@@ -6,6 +6,9 @@ import PropertyImageField from '@/components/molecules/PropertyImageField/Proper
 import styles from '@/styles/organisms/NewPropertyForm.module.css';
 const equipmentOptions=['Micro-Ondes','Clic-clac','Douche italienne','Four','Frigo','Rangements','WIFI','Lit','Parking','Bouilloire','Sèche Cheveux','SDB','Machine à laver','Toilettes sèches','Cuisine équipée','Cintres','Télévision','Baie vitrée','Chambre Séparée','Hotte','Climatisation','Baignoire','Frigo Américain','Vue Parc'];
 const categoryOptions=['Parc','Night Life','Culture','Nature','Touristique','Vue sur mer','Pour les couples','Famille','Forêt'];
+/**
+ * Gère le formulaire de publication : sélection des images, équipements, étiquettes et soumission.
+ */
 export default function NewPropertyForm({user}:{user:AuthUser}){
   const router=useRouter();
   const [cover,setCover]=useState<File[]>([]);

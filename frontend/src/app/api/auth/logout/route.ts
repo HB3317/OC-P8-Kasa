@@ -4,6 +4,9 @@ import {
   deleteSession,
 } from "@/services/authService";
 
+/**
+ * Supprime la session courante après vérification de l’origine de la requête.
+ */
 export async function POST(request: Request) {
   if (!checkOrigin(request)) {
     return NextResponse.json(

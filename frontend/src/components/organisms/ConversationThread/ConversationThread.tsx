@@ -19,6 +19,9 @@ type Props = {
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
 
+/**
+ * Affiche le fil de discussion sélectionné et son formulaire d’envoi.
+ */
 export default function ConversationThread({
   selected,
   messages,

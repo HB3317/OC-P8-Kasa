@@ -4,6 +4,9 @@ import { serverHttpClient } from "@/services/serverHttpClient";
 import { HttpError } from "@/services/httpClient";
 import type { Property } from "@/types/property";
 
+/**
+ * Renvoie les favoris du compte connecté à partir du service Express.
+ */
 export async function GET() {
   const user = await getSessionUser();
   const token = await getSessionToken();

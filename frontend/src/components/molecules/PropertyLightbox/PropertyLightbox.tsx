@@ -15,6 +15,9 @@ type Props = {
   onClose: () => void;
 };
 
+/**
+ * Affiche les photographies dans une boîte de dialogue accessible pilotée par le carrousel.
+ */
 export default function PropertyLightbox({ images, title, activeIndex, onPrevious, onNext, onClose }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -29,7 +32,7 @@ export default function PropertyLightbox({ images, title, activeIndex, onPreviou
 
   function handleKeyDown(event: KeyboardEvent<HTMLDialogElement>) {
     if (event.key === "Tab") {
-      // Only the lightbox controls participate in its keyboard tab order.
+      // Le parcours au clavier reste limité aux commandes de la visionneuse.
       const controls = Array.from(
         event.currentTarget.querySelectorAll<HTMLButtonElement>("button:not([disabled])")
       );

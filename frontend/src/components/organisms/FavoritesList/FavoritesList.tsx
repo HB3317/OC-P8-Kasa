@@ -8,6 +8,10 @@ import { httpClient } from "@/services/httpClient";
 import type { Property } from "@/types/property";
 import styles from "@/styles/organisms/FavoritesList.module.css";
 
+/**
+ * Affiche les favoris filtrés et différencie l’absence de logement d’un échec réseau.
+ * Le bouton de nouvelle tentative recharge la page afin de réinitialiser également le contexte des favoris.
+ */
 export default function FavoritesList() {
   const { ids, isReady, error, retry } = useFavorites();
   const [properties, setProperties] = useState<Property[]>([]);

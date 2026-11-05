@@ -6,6 +6,9 @@ import {
   loginUser,
 } from "@/services/authService";
 
+/**
+ * Authentifie un utilisateur auprès d’Express puis initialise sa session HttpOnly.
+ */
 export async function POST(request: Request) {
   if (!checkOrigin(request)) {
     return NextResponse.json(

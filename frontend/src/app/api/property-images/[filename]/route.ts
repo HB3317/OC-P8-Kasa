@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { API_URL } from '@/config/api';
+/**
+ * Transmet les images téléversées depuis Express sans exposer directement son adresse au navigateur.
+ */
 export async function GET(_request: NextRequest,{params}:{params:Promise<{filename:string}>}) {
   const {filename}=await params;
   if(!/^[0-9]{13}-[0-9a-f]{8}\.(jpg|png|webp)$/i.test(filename)) return new NextResponse(null,{status:404});

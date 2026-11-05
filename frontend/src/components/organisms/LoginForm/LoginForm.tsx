@@ -11,6 +11,9 @@ import { login } from "@/services/clientAuthService";
 import FormField from "@/components/atoms/FormField/FormField";
 import styles from "@/styles/organisms/LoginForm.module.css";
 
+/**
+ * Valide les identifiants et déclenche la création d’une session utilisateur.
+ */
 export default function LoginForm({ nextPath }: { nextPath?: string }) {
   const router = useRouter();
 

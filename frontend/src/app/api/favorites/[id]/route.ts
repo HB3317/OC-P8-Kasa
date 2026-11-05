@@ -6,6 +6,9 @@ import { HttpError } from "@/services/httpClient";
 
 type Context = { params: Promise<{ id: string }> };
 
+/**
+ * Ajoute ou retire un favori via Express, après contrôle de session et de l’origine.
+ */
 async function mutate(request: Request, context: Context, method: "POST" | "DELETE") {
   if (!checkOrigin(request)) return NextResponse.json({ error: "Requête non autorisée." }, { status: 403 });
   const user = await getSessionUser();

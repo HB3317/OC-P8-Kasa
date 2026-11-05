@@ -3,6 +3,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { messagingService } from "@/services/messagingService";
 import type { Conversation, Message } from "@/types/messaging";
 
+/**
+ * Centralise l’état de la messagerie : sélection, chargement périodique, lecture et envoi.
+ * Les conversations et les messages sont actualisés séparément toutes les dix secondes.
+ */
 export function useMessagesInbox() {
   const router = useRouter();
   const params = useSearchParams();
@@ -23,6 +27,10 @@ export function useMessagesInbox() {
   const [loading, setLoading] = useState(true);
   const sending = useRef(false);
 
+  /**
+   * Recharge la liste des conversations et publie son nouvel état.
+   * @returns {Promise<Conversation[]>} Conversations renvoyées par le service.
+   */
   const refresh = useCallback(async () => {
     const rows = await messagingService.list();
     setConversations(rows);
@@ -106,6 +114,10 @@ export function useMessagesInbox() {
     return () => { mounted = false; clearInterval(timer); };
   }, [active]);
 
+  /**
+   * Sélectionne une conversation, ajuste la navigation mobile et marque les messages comme lus.
+   * @param {number} id Identifiant de la conversation.
+   */
   async function openConversation(id: number) {
     setMessagesLoadingFor(id);
     setActive(id);
@@ -121,6 +133,10 @@ export function useMessagesInbox() {
     }
   }
 
+  /**
+   * Envoie le brouillon courant et actualise le fil ainsi que la liste des conversations.
+   * @param {FormEvent<HTMLFormElement>} event Soumission du formulaire.
+   */
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (sending.current || busy || active === null || !draft.trim()) return;
@@ -170,6 +186,9 @@ export function useMessagesInbox() {
   };
 }
 
+/**
+ * Transforme une erreur inconnue en message affichable, avec valeur de repli.
+ */
 function errorMessage(cause: unknown, fallback: string): string {
   return cause instanceof Error ? cause.message : fallback;
 }

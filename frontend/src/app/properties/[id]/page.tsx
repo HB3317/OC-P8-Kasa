@@ -5,6 +5,9 @@ import PropertyDetailTemplate from "@/components/templates/PropertyDetailTemplat
 
 type PropertyParams = { params: Promise<{ id: string }> };
 
+/**
+ * Construit les métadonnées de référencement à partir du logement demandé.
+ */
 export async function generateMetadata({ params }: PropertyParams): Promise<Metadata> {
   const { id } = await params;
   const property = await getProperty(id);
@@ -20,7 +23,9 @@ export async function generateMetadata({ params }: PropertyParams): Promise<Meta
 }
 
 
-/** Les URL relatives d'images doivent être absolues dans les données structurées. */
+/**
+ * Transforme un chemin d’image en URL absolue utilisable par les métadonnées.
+ */
 function imageUrl(source: string, origin: string): string | null {
   const value = source.trim();
   if (!value) return null;
@@ -32,7 +37,9 @@ function imageUrl(source: string, origin: string): string | null {
   return new URL(imagePath, origin).toString();
 }
 
-/** Empêche qu'une description ferme la balise script JSON-LD. */
+/**
+ * Empêche qu'une description ferme la balise script JSON-LD.
+ */
 function safeJsonLd(value: unknown): string {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }

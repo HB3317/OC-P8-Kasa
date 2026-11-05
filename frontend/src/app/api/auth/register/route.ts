@@ -7,6 +7,10 @@ import {
   registerUser,
 } from "@/services/authService";
 
+/**
+ * Crée un compte via Express, ouvre la session et tente l’envoi d’un email de confirmation.
+ * L’échec de l’email n’annule pas une inscription déjà validée.
+ */
 export async function POST(request: Request) {
   if (!checkOrigin(request)) {
     return NextResponse.json(

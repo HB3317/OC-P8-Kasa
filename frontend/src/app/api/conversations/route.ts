@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionToken } from "@/services/authService";
 import { API_URL } from "@/config/api";
+/**
+ * Transmet les opérations de consultation et d’ouverture des conversations au backend.
+ */
 async function forward(method: "GET" | "POST", request?: NextRequest) {
   const token = await getSessionToken();
   if (!token) return NextResponse.json({ error: "Connexion nécessaire." }, { status: 401 });

@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSessionToken } from "@/services/authService";
 import { API_URL } from "@/config/api";
 type Context = { params: Promise<{ id: string }> };
+/**
+ * Transmet à Express la demande de marquage des messages comme lus.
+ */
 export async function PATCH(_request: NextRequest, context: Context) {
   const token = await getSessionToken();
   if (!token) return NextResponse.json({ error: "Connexion nécessaire." }, { status: 401 });

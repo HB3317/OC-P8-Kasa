@@ -6,6 +6,9 @@ type CurrentUser = { id: number; name: string; picture: string | null; role: "cl
 type PublishedProperty = { id: string; host?: { id: number } };
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 
+/**
+ * Effectue un appel authentifié vers Express pour les étapes de publication.
+ */
 async function api<T>(path: string, token: string, method = "GET", body?: BodyInit, isJson = false): Promise<T> {
   const response = await fetch(`${API_URL}${path}`, {
     method, cache: "no-store",
@@ -18,6 +21,9 @@ async function api<T>(path: string, token: string, method = "GET", body?: BodyIn
   return result;
 }
 
+/**
+ * Téléverse une image auprès d’Express et récupère le chemin du fichier publié.
+ */
 async function upload(file: File, token: string, purpose: string): Promise<string> {
   const body = new FormData();
   body.append("file", file);
@@ -27,6 +33,10 @@ async function upload(file: File, token: string, purpose: string): Promise<strin
   return result.url;
 }
 
+/**
+ * Orchestre la publication d’un logement, les téléversements et les ajustements éventuels du rôle utilisateur.
+ * La restauration d’un rôle provisoire n’est tentée que si aucune demande de création du logement n’a été envoyée.
+ */
 export async function POST(request: NextRequest) {
   const origin = request.headers.get("origin");
   if (!origin || origin !== request.nextUrl.origin) return NextResponse.json({ error: "Origine non autorisée." }, { status: 403 });
@@ -68,7 +78,7 @@ export async function POST(request: NextRequest) {
     if (initialRole === "client") {
       const password = String(form.get("confirmation_password") ?? "");
       if (!password || !payload.email) return NextResponse.json({ error: "Confirme ton mot de passe pour publier ta première annonce." }, { status: 400 });
-      // Confirm credentials before any role change.
+      // Vérifier les identifiants avant tout changement de rôle.
       await api<{ token: string }>("/auth/login", "", "POST", JSON.stringify({ email: payload.email, password }), true);
       await api<CurrentUser>(`/api/users/${userId}`, token, "PATCH", JSON.stringify({ role: "owner" }), true);
       promoted = true;
@@ -80,8 +90,8 @@ export async function POST(request: NextRequest) {
     const coverUrl = await upload(cover, token, "property-cover"); uploaded.push(coverUrl);
     const imageUrls: string[] = [];
     for (const file of pictures as File[]) { const url = await upload(file, token, "property-picture"); uploaded.push(url); imageUrls.push(url); }
-    // The account photo is not changed unless a new image was explicitly chosen.
-    // From this point on, a lost response does not prove that Express failed to create the property.
+    // Ne remplacer la photo de profil que lorsqu’une nouvelle image a été sélectionnée.
+    // Après cet appel, une réponse perdue ne prouve pas que la création a échoué.
     creationAttempted = true;
     const result = await api<PublishedProperty>("/api/properties", token, "POST", JSON.stringify({
       title, description, location, price_per_night: price,
@@ -91,9 +101,9 @@ export async function POST(request: NextRequest) {
     propertyCreated = true;
     if (avatar instanceof File) {
       try { const avatarUrl = await upload(avatar, token, "user-picture"); uploaded.push(avatarUrl); await api<CurrentUser>(`/api/users/${userId}`, token, "PATCH", JSON.stringify({ picture: avatarUrl }), true); }
-      catch { /* Profile photo is optional: do not undo a published listing. */ }
+      catch { /* La photo de profil est facultative : ne pas annuler une annonce publiée. */ }
     }
-    // The property is already committed: an optional cookie failure must never report publication failure.
+    // L’annonce est déjà enregistrée : un échec de cookie ne doit pas annuler la publication.
     let sessionWarning: string | undefined;
     if (promoted) {
       try { await createSession(token); }
@@ -102,23 +112,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ id: result.id, ...(sessionWarning ? { warning: sessionWarning } : {}) }, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Publication impossible.";
-    // Safe cleanup only before any property-creation request was dispatched.
-    // After POST, the response can be lost even though the property exists in SQLite.
+    // Une restauration est sûre uniquement avant l’envoi de la demande de création.
+    // Après POST, la réponse peut être perdue alors que le logement existe dans SQLite.
     if (!creationAttempted && !propertyCreated && uploaded.length) {
       try { await api<unknown>("/api/uploads/images", token, "DELETE", JSON.stringify({ urls: uploaded }), true); }
       catch { /* Best effort: orphan files are safer than deleting published pictures. */ }
     }
-    // Only undo our own promotion when this request never attempted property creation.
+    // N’annuler notre promotion de rôle que si cette requête n’a pas tenté la création.
     if (!creationAttempted && promoted && userId) {
-      // Re-read the current state: another tab may already have published a property.
-      // If verification is unavailable, leave owner intact rather than demoting a real host.
+      // Relire l’état courant : un autre onglet a peut-être déjà publié une annonce.
+      // Sans vérification possible, conserver le rôle hôte plutôt que rétrograder un propriétaire réel.
       let canRevert = false;
       try {
         const listings = await api<Array<{ host?: { id?: number }; host_id?: number }>>("/api/properties", token);
         canRevert = Array.isArray(listings) && listings.every(p => p.host?.id !== userId && p.host_id !== userId);
-      } catch { /* State unknown: do not demote. */ }
+      } catch { /* État incertain : ne pas rétrograder le rôle. */ }
       if (canRevert) try { await api<CurrentUser>(`/api/users/${userId}`, token, "PATCH", JSON.stringify({ role: "client" }), true); }
-      catch { /* Do not conceal original failure. */ }
+      catch { /* Conserver la cause initiale de l’échec. */ }
     }
     if (creationAttempted && !propertyCreated) {
       return NextResponse.json({

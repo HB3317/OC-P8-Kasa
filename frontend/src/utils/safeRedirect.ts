@@ -1,3 +1,7 @@
+/**
+ * N’autorise que les chemins internes sûrs après authentification et exclut les pages de connexion et d’inscription.
+ * @returns {string} Destination validée ou page d’accueil.
+ */
 export function safeRedirect(value: string | null | undefined): string {
   if (!value || !value.startsWith("/") || value.startsWith("//") || value.includes("\\")) return "/";
   try {
@@ -10,6 +14,9 @@ export function safeRedirect(value: string | null | undefined): string {
   }
 }
 
+/**
+ * Construit une URL de connexion avec une destination de retour préalablement sécurisée.
+ */
 export function loginDestination(path: string): string {
   return `/login?next=${encodeURIComponent(safeRedirect(path))}`;
 }

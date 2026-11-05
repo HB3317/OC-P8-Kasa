@@ -12,6 +12,9 @@ type Props = {
   onOpen: (id: number) => void;
 };
 
+/**
+ * Présente les conversations disponibles et permet de sélectionner le fil actif.
+ */
 export default function ConversationsSidebar({
   conversations,
   activeId,

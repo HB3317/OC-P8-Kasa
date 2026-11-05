@@ -17,6 +17,9 @@ type Registration = Credentials & {
   name: string;
 };
 
+/**
+ * Erreur d’authentification exposant un statut HTTP utilisable par les routes Next.js.
+ */
 export class AuthError extends Error {
   constructor(
     message: string,
@@ -26,7 +29,12 @@ export class AuthError extends Error {
   }
 }
 
-// Send authentication requests to the Express API.
+// Toutes les opérations d’authentification passent par l’API Express.
+/**
+ * Transmet les identifiants à Express et convertit ses erreurs en messages adaptés au frontend.
+ * @param {string} path Action d’authentification demandée.
+ * @returns {Promise<AuthResult>} Utilisateur et jeton renvoyés par Express.
+ */
 async function requestAuth(
   path: string,
   body: Credentials | Registration,
@@ -53,19 +61,28 @@ async function requestAuth(
   }
 }
 
+/**
+ * Authentifie un compte via Express et retourne le résultat de session.
+ */
 export async function loginUser(
   credentials: Credentials,
 ): Promise<AuthResult> {
   return requestAuth("login", credentials);
 }
 
+/**
+ * Crée un compte via Express et retourne le jeton nécessaire à l’ouverture de session.
+ */
 export async function registerUser(
   registration: Registration,
 ): Promise<AuthResult> {
   return requestAuth("register", registration);
 }
 
-// Store the JWT in an HttpOnly cookie.
+// Le cookie HttpOnly rend le JWT inaccessible au JavaScript du navigateur.
+/**
+ * Enregistre le JWT dans un cookie de session HttpOnly pour éviter son accès par JavaScript client.
+ */
 export async function createSession(token: string) {
   const cookieStore = await cookies();
 
@@ -78,14 +95,20 @@ export async function createSession(token: string) {
   });
 }
 
-// Remove the session cookie on logout.
+// Supprimer le cookie invalide la session côté navigateur.
+/**
+ * Supprime le cookie de session lors de la déconnexion.
+ */
 export async function deleteSession() {
   const cookieStore = await cookies();
 
   cookieStore.delete(COOKIE_NAME);
 }
 
-// Retrieve the authenticated user from the current session.
+// La session est résolue à partir du cookie côté serveur.
+/**
+ * Résout l’utilisateur de la session à partir du cookie ; Express reste responsable de valider le JWT.
+ */
 export async function getSessionUser(): Promise<AuthUser | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get(COOKIE_NAME)?.value;
@@ -93,8 +116,8 @@ export async function getSessionUser(): Promise<AuthUser | null> {
   if (!token) return null;
 
   try {
-    // Decode the JWT payload only to extract the user ID.
-    // Express validates the token's authenticity.
+    // Le contenu du JWT est décodé uniquement pour retrouver l’identifiant.
+    // Express reste chargé de vérifier l’authenticité du jeton.
     const payload = JSON.parse(
       Buffer.from(token.split(".")[1], "base64url")
         .toString("utf8"),
@@ -119,6 +142,9 @@ export async function getSessionUser(): Promise<AuthUser | null> {
   }
 }
 
+/**
+ * Récupère le jeton de session côté serveur, ou null en l’absence de cookie.
+ */
 export async function getSessionToken(): Promise<string | null> {
   return (await cookies()).get(COOKIE_NAME)?.value ?? null;
 }

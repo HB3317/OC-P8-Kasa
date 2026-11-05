@@ -3,6 +3,9 @@ import { getProperties } from "@/services/propertyService";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * Génère le plan du site à partir des pages publiques et des logements disponibles.
+ */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const origin = process.env.SITE_URL || "http://localhost:3001";
   const base = origin.replace(/\/$/, "");

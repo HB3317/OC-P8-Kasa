@@ -11,6 +11,9 @@ import styles from "@/styles/templates/PropertyDetail.module.css";
 
 type Props = { property: PropertyDetail };
 
+/**
+ * Assemble les sections de la fiche logement à partir de ses données détaillées.
+ */
 export default function PropertyDetailTemplate({ property }: Props) {
   const images = [property.cover, ...property.pictures]
     .filter((image): image is string => Boolean(image))

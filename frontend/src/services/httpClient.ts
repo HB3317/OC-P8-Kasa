@@ -1,3 +1,6 @@
+/**
+ * Représente une erreur réseau ou API en conservant son statut HTTP.
+ */
 export class HttpError extends Error {
   constructor(
     public readonly status: number,
@@ -9,7 +12,15 @@ export class HttpError extends Error {
 
 type RequestOptions = Omit<RequestInit, "method" | "body">;
 
-// Share HTTP, JSON, and error handling across API calls.
+
+/**
+ * Unifie les requêtes HTTP, le traitement JSON et les erreurs pour les services clients et serveur.
+ * @param url URL de destination.
+ * @param method Méthode HTTP.
+ * @param body Corps facultatif, sérialisé en JSON sauf pour FormData.
+ * @returns {Promise<TResponse>} Réponse décodée du serveur.
+ * @throws {HttpError} Si le réseau, le statut HTTP ou la réponse sont invalides.
+ */
 async function request<TResponse, TBody = undefined>(
   url: string,
   method: string,

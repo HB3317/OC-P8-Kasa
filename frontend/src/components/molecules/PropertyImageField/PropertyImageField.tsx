@@ -3,6 +3,9 @@ import {useEffect,useId,useRef,useState} from 'react';
 import PlusIcon from '@/components/quarks/PlusIcon';
 import styles from '@/styles/molecules/PropertyImageField.module.css';
 type Props={label:string; files:File[]; onChange:(files:File[])=>void; multiple?:boolean; max?:number; hint?:string};
+/**
+ * Permet de choisir et prévisualiser une image dans le formulaire de publication.
+ */
 export default function PropertyImageField({label,files,onChange,multiple=false,max=1,hint}:Props){
   const input=useRef<HTMLInputElement>(null);
   const inputId=useId();

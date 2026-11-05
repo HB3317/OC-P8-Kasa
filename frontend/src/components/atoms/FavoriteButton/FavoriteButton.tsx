@@ -4,6 +4,9 @@ import HeartIcon from "@/components/quarks/HeartIcon";
 import { useFavorites } from "@/hooks/useFavorites";
 import styles from "@/styles/atoms/FavoriteButton.module.css";
 
+/**
+ * Affiche et modifie l’état favori du logement depuis le contexte partagé.
+ */
 export default function FavoriteButton({ propertyId }: { propertyId: string }) {
   const { ids, isReady, toggle, error } = useFavorites();
   const active = ids.includes(propertyId);

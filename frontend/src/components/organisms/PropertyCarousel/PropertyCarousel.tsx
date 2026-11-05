@@ -12,6 +12,9 @@ type Props = {
   children?: ReactNode;
 };
 
+/**
+ * Gère le diaporama, la navigation accessible et l’ouverture de la visionneuse agrandie.
+ */
 export default function PropertyCarousel({ images, title, children }: Props) {
   const [index, setIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);

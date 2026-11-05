@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSessionToken } from "@/services/authService";
 import { API_URL } from "@/config/api";
 type Context = { params: Promise<{ id: string }> };
+/**
+ * Transmet à Express les requêtes de consultation ou d’envoi des messages d’une conversation.
+ */
 async function forward(method: "GET" | "POST", request: NextRequest, context: Context) {
   const token = await getSessionToken();
   if (!token) return NextResponse.json({ error: "Connexion nécessaire." }, { status: 401 });

@@ -7,6 +7,9 @@ import styles from "@/styles/templates/MessagesTemplate.module.css";
 
 type Props = { userId: number };
 
+/**
+ * Compose la liste des conversations et le fil actif ; orchestre leur affichage sur mobile et ordinateur.
+ */
 export default function MessagesTemplate({ userId }: Props) {
   const inbox = useMessagesInbox();
 

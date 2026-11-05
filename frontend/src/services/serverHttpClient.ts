@@ -1,7 +1,10 @@
 import { API_URL } from "@/config/api";
 import { httpClient } from "@/services/httpClient";
 
-// Only import this adapter from server-side modules.
+// Cet adaptateur doit être importé uniquement depuis le serveur.
+/**
+ * Adapte le client HTTP à l’API Express côté serveur, avec transmission facultative du JWT.
+ */
 export const serverHttpClient = {
   get: <T>(path: string, token?: string) =>
     httpClient.get<T>(`${API_URL}${path}`, {

@@ -14,6 +14,9 @@ type AuthResponse = {
   user: AuthUser;
 };
 
+/**
+ * Soumet les identifiants à la route Next.js de connexion.
+ */
 export function login(
   credentials: Credentials,
 ): Promise<AuthResponse> {
@@ -23,6 +26,9 @@ export function login(
   );
 }
 
+/**
+ * Soumet les données d’inscription à la route Next.js.
+ */
 export function register(
   registration: Registration,
 ): Promise<AuthResponse> {
@@ -32,6 +38,9 @@ export function register(
   );
 }
 
+/**
+ * Demande la suppression de la session courante.
+ */
 export function logout(): Promise<{ ok: boolean }> {
   return httpClient.post<{ ok: boolean }, undefined>("/api/auth/logout", undefined);
 }

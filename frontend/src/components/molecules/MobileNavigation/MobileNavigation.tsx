@@ -10,6 +10,9 @@ type MobileNavigationProps = {
   onLogout: () => void;
 };
 
+/**
+ * Affiche les liens de navigation mobile et relaie les actions d’ouverture ou de fermeture.
+ */
 export default function MobileNavigation({
   pathname, isOpen, onNavigate, authenticated, isLoggingOut, onLogout,
 }: MobileNavigationProps) {

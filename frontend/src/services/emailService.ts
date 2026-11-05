@@ -1,6 +1,12 @@
 import "server-only";
 
-/** Sends a non-blocking welcome email after successful account creation. */
+
+/**
+ * Envoie un email d’accueil via Resend après la création réussie d’un compte.
+ * Si les variables d’environnement manquent, aucun envoi n’est tenté ; un rejet HTTP est propagé à la route appelante, qui préserve l’inscription.
+ * @param input Nom et adresse email du nouveau compte.
+ * @returns {Promise<void>} Fin de la tentative d’envoi.
+ */
 export async function sendRegistrationConfirmation(input: {
   name: string;
   email: string;
@@ -29,7 +35,6 @@ export async function sendRegistrationConfirmation(input: {
   });
 
   if (!response.ok) {
-    // Never log API credentials or complete third-party responses.
     throw new Error(`Resend a refusé l'envoi (HTTP ${response.status}).`);
   }
 }

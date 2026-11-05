@@ -5,13 +5,18 @@ type MenuState = {
   open: boolean;
 };
 
+/**
+ * Gère l’ouverture du menu mobile et le referme après un changement de page ou la touche Échap.
+ * @param {string} pathname Chemin courant.
+ * @returns État et commandes du menu.
+ */
 export function useMobileMenu(pathname: string) {
   const [menuState, setMenuState] = useState<MenuState>({
     pathname,
     open: false,
   });
 
-  // A menu opened on a previous route should be considered closed.
+  // Un menu ouvert sur une autre page doit être considéré comme fermé.
   const isOpen =
     menuState.pathname === pathname && menuState.open;
 
