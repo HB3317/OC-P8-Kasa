@@ -1,3 +1,5 @@
+import { URL_PUBLIC } from "@/config/URL";
+
 
 /**
  * Vérifie que l’en-tête Origin correspond à l’origine de la requête pour filtrer les appels intersites.
@@ -9,5 +11,8 @@ export function checkOrigin(request: Request): boolean {
 
   if (!origin) return false;
 
-  return origin === new URL(request.url).origin;
+  const requestOrigin = new URL(request.url).origin;
+  const publicOrigin = new URL(URL_PUBLIC).origin;
+
+  return origin === requestOrigin || origin === publicOrigin;
 }
