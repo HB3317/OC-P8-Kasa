@@ -1,6 +1,5 @@
 import { URL_PUBLIC } from "@/config/URL";
 
-
 /**
  * Vérifie que l’en-tête Origin correspond à l’origine de la requête pour filtrer les appels intersites.
  * @param {Request} request Requête entrante.

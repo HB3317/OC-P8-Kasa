@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { messagingService } from "@/services/messagingService";
 import type { Conversation, Message } from "@/types/messaging";
@@ -18,7 +24,9 @@ export function useMessagesInbox() {
   const [mobileDetail, setMobileDetail] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [messagesFor, setMessagesFor] = useState<number | null>(null);
-  const [messagesLoadingFor, setMessagesLoadingFor] = useState<number | null>(null);
+  const [messagesLoadingFor, setMessagesLoadingFor] = useState<number | null>(
+    null,
+  );
   const [listWarning, setListWarning] = useState("");
   const listFailures = useRef(0);
   const [draft, setDraft] = useState("");
@@ -46,13 +54,15 @@ export function useMessagesInbox() {
         let next = requestedConversation ? Number(requestedConversation) : null;
 
         if (requestedProperty) {
-          const conversation = await messagingService.openForProperty(requestedProperty);
+          const conversation =
+            await messagingService.openForProperty(requestedProperty);
           next = conversation.id;
           rows = await refresh();
         }
         if (cancelled) return;
 
-        const validId = next && rows.some((row) => row.id === next) ? next : null;
+        const validId =
+          next && rows.some((row) => row.id === next) ? next : null;
         setActive(validId);
         if (validId) setMobileDetail(true);
       } catch (cause) {
@@ -63,7 +73,9 @@ export function useMessagesInbox() {
     }
 
     void start();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [refresh, requestedProperty, requestedConversation]);
 
   // Actualiser la liste même lorsqu'aucune conversation n'est sélectionnée.
@@ -81,11 +93,16 @@ export function useMessagesInbox() {
           if (!mounted) return;
           listFailures.current += 1;
           if (listFailures.current >= 3) {
-            setListWarning("Actualisation des conversations indisponible. Réessayez plus tard.");
+            setListWarning(
+              "Actualisation des conversations indisponible. Réessayez plus tard.",
+            );
           }
         });
     }, 10000);
-    return () => { mounted = false; clearInterval(timer); };
+    return () => {
+      mounted = false;
+      clearInterval(timer);
+    };
   }, [refresh]);
 
   useEffect(() => {
@@ -110,8 +127,13 @@ export function useMessagesInbox() {
     }
 
     void load();
-    const timer = setInterval(() => { void load(); }, 10000);
-    return () => { mounted = false; clearInterval(timer); };
+    const timer = setInterval(() => {
+      void load();
+    }, 10000);
+    return () => {
+      mounted = false;
+      clearInterval(timer);
+    };
   }, [active]);
 
   /**
@@ -129,7 +151,9 @@ export function useMessagesInbox() {
       await messagingService.markRead(id);
       await refresh();
     } catch (cause) {
-      setError(errorMessage(cause, "Impossible de marquer la conversation comme lue."));
+      setError(
+        errorMessage(cause, "Impossible de marquer la conversation comme lue."),
+      );
     }
   }
 
@@ -171,7 +195,9 @@ export function useMessagesInbox() {
     active,
     mobileDetail,
     messages: active !== null && messagesFor === active ? messages : [],
-    messagesLoading: active !== null && (messagesFor !== active || messagesLoadingFor === active),
+    messagesLoading:
+      active !== null &&
+      (messagesFor !== active || messagesLoadingFor === active),
     listWarning,
     draft,
     busy,

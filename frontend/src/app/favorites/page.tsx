@@ -7,8 +7,24 @@ import { FavoritesProvider } from "@/hooks/useFavorites";
 import styles from "@/styles/templates/HomeTemplate.module.css";
 
 export default function FavoritesPage() {
-  return <div className={`${styles.page} ${styles.favoritesPage}`}><Header /><main className={styles.main}>
-    <h1>Mes favoris</h1>
-    <FavoritesProvider><FavoritesList /></FavoritesProvider>
-  </main><Footer /></div>;
+  return (
+    <div className={`${styles.page} ${styles.favoritesPage}`}>
+      <Header />
+      <main className={styles.main}>
+        <div className={styles.intro}>
+          <h1>Vos favoris</h1>
+          <p>
+            Retrouvez ici tous les logements que vous avez aimés.
+            <br />
+            Prêts à réserver ? Un simple clic et votre prochain séjour est en
+            route.
+          </p>
+        </div>
+        <FavoritesProvider>
+          <FavoritesList />
+        </FavoritesProvider>
+      </main>
+      <Footer />
+    </div>
+  );
 }

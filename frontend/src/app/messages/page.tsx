@@ -9,5 +9,13 @@ export const dynamic = "force-dynamic";
 export default async function MessagesPage() {
   const user = await getSessionUser();
   if (!user) redirect("/login?next=%2Fmessages");
-  return <><Header /><main><MessagesTemplate userId={user.id} /></main><Footer /></>;
+  return (
+    <>
+      <Header />
+      <main>
+        <MessagesTemplate userId={user.id} userPicture={user.picture} />
+      </main>
+      <Footer />
+    </>
+  );
 }

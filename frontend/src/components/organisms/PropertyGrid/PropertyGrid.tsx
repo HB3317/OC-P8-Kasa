@@ -6,7 +6,9 @@ type Props = { properties: Property[] };
 
 export default function PropertyGrid({ properties }: Props) {
   if (properties.length === 0) {
-    return <p className={styles.empty}>Aucun logement disponible pour le moment.</p>;
+    return (
+      <p className={styles.empty}>Aucun logement disponible pour le moment.</p>
+    );
   }
 
   return (

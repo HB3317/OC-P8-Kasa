@@ -40,7 +40,9 @@ export default function FavoritesList() {
     }
 
     void load();
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [isReady]);
 
   if (!isReady || loading) return <p>Chargement des favoris...</p>;
@@ -73,6 +75,10 @@ export default function FavoritesList() {
   }
 
   return (
-    <PropertyGrid properties={properties.filter((property) => ids.includes(String(property.id)))} />
+    <PropertyGrid
+      properties={properties.filter((property) =>
+        ids.includes(String(property.id)),
+      )}
+    />
   );
 }

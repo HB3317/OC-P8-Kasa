@@ -10,8 +10,20 @@ type Props = {
   onOpen: (id: number) => void;
 };
 
-export default function ConversationItem({ conversation, selected, onOpen }: Props) {
-  const { id, peer_picture, peer_name, last_message, property_title, last_message_at, unread } = conversation;
+export default function ConversationItem({
+  conversation,
+  selected,
+  onOpen,
+}: Props) {
+  const {
+    id,
+    peer_picture,
+    peer_name,
+    last_message,
+    property_title,
+    last_message_at,
+    unread,
+  } = conversation;
 
   return (
     <button
@@ -23,7 +35,14 @@ export default function ConversationItem({ conversation, selected, onOpen }: Pro
     >
       <span className={styles.avatar} aria-hidden="true">
         {peer_picture && (
-          <Image src={resolveUploadImage(peer_picture)} alt="" fill sizes="36px" unoptimized className={styles.avatarImage} />
+          <Image
+            src={resolveUploadImage(peer_picture)}
+            alt=""
+            fill
+            sizes="36px"
+            unoptimized
+            className={styles.avatarImage}
+          />
         )}
       </span>
       <span className={styles.preview}>

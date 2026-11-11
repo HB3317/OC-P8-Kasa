@@ -7,8 +7,7 @@ const noCache = { cache: "no-store" as const };
  * Regroupe les appels de messagerie sans mise en cache : conversations, messages et accusés de lecture.
  */
 export const messagingService = {
-  list: () =>
-    httpClient.get<Conversation[]>("/api/conversations", noCache),
+  list: () => httpClient.get<Conversation[]>("/api/conversations", noCache),
 
   openForProperty: (propertyId: string) =>
     httpClient.post<{ id: number }, { propertyId: string }>(

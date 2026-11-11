@@ -4,5 +4,7 @@
  */
 export function resolveUploadImage(src: string): string {
   if (!src.startsWith("/uploads/")) return src;
-  return "/api/property-images/" + encodeURIComponent(src.slice("/uploads/".length));
+  return (
+    "/api/property-images/" + encodeURIComponent(src.slice("/uploads/".length))
+  );
 }

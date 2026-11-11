@@ -14,7 +14,11 @@ type AuthActionMenuProps = {
 /**
  * Gère l’ouverture et la fermeture du menu de compte utilisateur, notamment au clavier.
  */
-export default function AuthActionMenu({ authenticated, isLoggingOut, onLogout }: AuthActionMenuProps) {
+export default function AuthActionMenu({
+  authenticated,
+  isLoggingOut,
+  onLogout,
+}: AuthActionMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -52,12 +56,23 @@ export default function AuthActionMenu({ authenticated, isLoggingOut, onLogout }
       {isOpen && (
         <div className={styles.dropdown}>
           {authenticated ? (
-            <button type="button" className={styles.action} disabled={isLoggingOut}
-              onClick={() => { setIsOpen(false); onLogout(); }}>
+            <button
+              type="button"
+              className={styles.action}
+              disabled={isLoggingOut}
+              onClick={() => {
+                setIsOpen(false);
+                onLogout();
+              }}
+            >
               Se déconnecter
             </button>
           ) : (
-            <Link href="/login" className={styles.action} onClick={() => setIsOpen(false)}>
+            <Link
+              href="/login"
+              className={styles.action}
+              onClick={() => setIsOpen(false)}
+            >
               Se connecter
             </Link>
           )}

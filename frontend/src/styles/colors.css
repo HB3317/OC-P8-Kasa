@@ -1,6 +1,7 @@
-
 :root {
-  /* Palette de référence — maquette Kasa */
+  /**
+   * Palette de référence — maquette Kasa
+   */
   --color-red-main: #99331a;
   --color-red-dark: #842c16;
   --color-cream: #fffbf9;
@@ -9,7 +10,9 @@
   --color-grey-light: #f5f5f5;
   --color-grey-medium: #565656;
 
-  /* Couleurs sémantiques — interface */
+  /**
+   * Couleurs sémantiques — interface
+   */
   --color-text-primary: var(--color-black);
   --color-text-secondary: var(--color-grey-medium);
   --color-text-inverse: var(--color-white);
@@ -25,15 +28,21 @@
   --color-border: var(--color-grey-medium);
 }
 
-/* Logo Kasa — couleurs du pictogramme */
+/**
+ * Logo Kasa — couleurs du pictogramme
+ */
 :root {
   --logo-picto-detail: #e64631;
 
-  /* Dégradé 0 */
+  /**
+   * Dégradé 0
+   */
   --logo-gradient-0-start: #995236;
   --logo-gradient-0-end: #ffe7e4;
 
-  /* Dégradé 1 */
+  /**
+   * Dégradé 1
+   */
   --logo-gradient-1-start: #ff6060;
   --logo-gradient-1-stop-1: #f45c5c;
   --logo-gradient-1-stop-2: #e65757;
@@ -41,12 +50,16 @@
   --logo-gradient-1-stop-4: #ee6c6c;
   --logo-gradient-1-end: #ed5959;
 
-  /* Dégradé 2 */
+  /**
+   * Dégradé 2
+   */
   --logo-gradient-2-start: #ff7f50;
   --logo-gradient-2-end: #e53a1c;
 }
 
-/* Logo Kasa — dégradé du lettrage */
+/**
+ * Logo Kasa — dégradé du lettrage
+ */
 :root {
   --logo-letter-gradient-start: #fc7152;
   --logo-letter-gradient-end: #e74530;

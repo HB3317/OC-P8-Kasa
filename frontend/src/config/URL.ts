@@ -1,1 +1,1 @@
-export const URL_PUBLIC = "https://mushy-reselect-twins.ngrok-free.dev";
+export const URL_PUBLIC = "https://example.com";

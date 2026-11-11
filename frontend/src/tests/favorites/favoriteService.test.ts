@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { getGuestFavorites, saveGuestFavorites } from "@/services/favoriteService";
+import {
+  getGuestFavorites,
+  saveGuestFavorites,
+} from "@/services/favoriteService";
 
 const key = "kasa_guest_favorites";
 

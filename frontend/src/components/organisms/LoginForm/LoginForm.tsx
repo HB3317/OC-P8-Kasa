@@ -40,9 +40,11 @@ export default function LoginForm({ nextPath }: { nextPath?: string }) {
       router.replace(safeRedirect(nextPath));
       router.refresh();
     } catch (error) {
-      setNotice(error instanceof HttpError && error.status !== 503
-        ? error.message
-        : "Impossible de contacter le serveur.");
+      setNotice(
+        error instanceof HttpError && error.status !== 503
+          ? error.message
+          : "Impossible de contacter le serveur.",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -56,8 +58,8 @@ export default function LoginForm({ nextPath }: { nextPath?: string }) {
         </h1>
 
         <p className={styles.description}>
-          Connectez-vous pour retrouver vos réservations, vos annonces
-          et tout ce qui rend vos séjours uniques.
+          Connectez-vous pour retrouver vos réservations, vos annonces et tout
+          ce qui rend vos séjours uniques.
         </p>
       </div>
 
@@ -80,11 +82,7 @@ export default function LoginForm({ nextPath }: { nextPath?: string }) {
           />
         </div>
 
-        <button
-          type="submit"
-          className={styles.submit}
-          disabled={isSubmitting}
-        >
+        <button type="submit" className={styles.submit} disabled={isSubmitting}>
           {isSubmitting ? "Connexion..." : "Se connecter"}
         </button>
 
@@ -99,7 +97,11 @@ export default function LoginForm({ nextPath }: { nextPath?: string }) {
 
           <p>
             Pas encore de compte ?{" "}
-            <Link href={`/register?next=${encodeURIComponent(safeRedirect(nextPath))}`}>Inscrivez-vous</Link>
+            <Link
+              href={`/register?next=${encodeURIComponent(safeRedirect(nextPath))}`}
+            >
+              Inscrivez-vous
+            </Link>
           </p>
         </div>
       </form>

@@ -1,10 +1,6 @@
 import { checkOrigin } from "@/utils/checkOrigin";
 import { NextResponse } from "next/server";
-import {
-  AuthError,
-  createSession,
-  loginUser,
-} from "@/services/authService";
+import { AuthError, createSession, loginUser } from "@/services/authService";
 
 /**
  * Authentifie un utilisateur auprès d’Express puis initialise sa session HttpOnly.
@@ -38,17 +34,11 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ user });
   } catch (error) {
-    const status =
-      error instanceof AuthError ? error.status : 400;
+    const status = error instanceof AuthError ? error.status : 400;
 
     const message =
-      error instanceof AuthError
-        ? error.message
-        : "Requête invalide.";
+      error instanceof AuthError ? error.message : "Requête invalide.";
 
-    return NextResponse.json(
-      { error: message },
-      { status },
-    );
+    return NextResponse.json({ error: message }, { status });
   }
 }

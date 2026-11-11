@@ -1,7 +1,6 @@
 import { API_URL } from "@/config/api";
 import { httpClient } from "@/services/httpClient";
 
-// Cet adaptateur doit être importé uniquement depuis le serveur.
 /**
  * Adapte le client HTTP à l’API Express côté serveur, avec transmission facultative du JWT.
  */
@@ -12,7 +11,10 @@ export const serverHttpClient = {
       headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     }),
   request: <T>(path: string, method: "POST" | "DELETE", token: string) =>
-    httpClient.request<T>(`${API_URL}${path}`, method, { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" }),
+    httpClient.request<T>(`${API_URL}${path}`, method, {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    }),
   post: <T, B>(path: string, body: B) =>
     httpClient.post<T, B>(`${API_URL}${path}`, body, { cache: "no-store" }),
 };

@@ -1,8 +1,6 @@
 import { checkOrigin } from "@/utils/checkOrigin";
 import { NextResponse } from "next/server";
-import {
-  deleteSession,
-} from "@/services/authService";
+import { deleteSession } from "@/services/authService";
 
 /**
  * Supprime la session courante après vérification de l’origine de la requête.

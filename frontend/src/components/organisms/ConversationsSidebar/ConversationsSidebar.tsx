@@ -30,10 +30,16 @@ export default function ConversationsSidebar({
       aria-label="Conversations"
     >
       <div className={styles.sideHeading}>
-        <button className={styles.back} type="button" onClick={onBack}>← Retour</button>
+        <button className={styles.back} type="button" onClick={onBack}>
+          ← Retour
+        </button>
         <h1>Messages</h1>
       </div>
-      {listWarning && <p role="status" className={styles.info}>{listWarning}</p>}
+      {listWarning && (
+        <p role="status" className={styles.info}>
+          {listWarning}
+        </p>
+      )}
       <div className={styles.list}>
         {loading ? (
           <p className={styles.info}>Chargement…</p>

@@ -5,12 +5,12 @@ import ConversationThread from "@/components/organisms/ConversationThread/Conver
 import { useMessagesInbox } from "@/hooks/useMessagesInbox";
 import styles from "@/styles/templates/MessagesTemplate.module.css";
 
-type Props = { userId: number };
+type Props = { userId: number; userPicture: string | null };
 
 /**
  * Compose la liste des conversations et le fil actif ; orchestre leur affichage sur mobile et ordinateur.
  */
-export default function MessagesTemplate({ userId }: Props) {
+export default function MessagesTemplate({ userId, userPicture }: Props) {
   const inbox = useMessagesInbox();
 
   return (
@@ -29,6 +29,7 @@ export default function MessagesTemplate({ userId }: Props) {
         messages={inbox.messages}
         messagesLoading={inbox.messagesLoading}
         userId={userId}
+        userPicture={userPicture}
         mobileDetail={inbox.mobileDetail}
         draft={inbox.draft}
         busy={inbox.busy}

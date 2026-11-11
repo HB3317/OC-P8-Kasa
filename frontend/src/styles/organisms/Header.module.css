@@ -18,8 +18,7 @@
 
   background-color: var(--color-background);
   border-radius: 10px;
-  box-shadow: 0 4px 8px
-    color-mix(in srgb, var(--color-black) 8%, transparent);
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--color-black) 8%, transparent);
 }
 
 .desktopNavigation {
@@ -60,7 +59,9 @@
   display: none;
 }
 
-/* Mobile : référence de la maquette à 390px */
+/**
+*Mobile : référence de la maquette à 390px
+*/
 @media (max-width: 800px) {
   .header {
     padding: 0;
@@ -112,10 +113,14 @@
   }
 }
 
-
-/* Lien logo mobile, sans menu secondaire. */
+/**
+ * Lien logo mobile, sans menu secondaire.
+ */
 @media (max-width: 800px) {
-  .mobileLogo { padding: 0; text-decoration: none; }
+  .mobileLogo {
+    padding: 0;
+    text-decoration: none;
+  }
 }
 
 .authError {

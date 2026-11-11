@@ -7,9 +7,24 @@
   aspect-ratio: 1.72;
 }
 
-/* Le bouton d'agrandissement occupe uniquement la photo principale. */
-.openPicture { position:relative; display:block; width:100%; height:100%; padding:0; border:0; background:transparent; cursor:zoom-in; }
-.openPicture:focus-visible { outline: none; }
+/**
+ * Le bouton d'agrandissement occupe uniquement la photo principale.
+ */
+.openPicture {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.openPicture:focus-visible {
+  outline: none;
+}
+
 .openPicture:focus-visible::after {
   content: "";
   position: absolute;
@@ -66,7 +81,10 @@
   transform: scale(1.045);
 }
 
-.thumbnail:focus-visible { outline: none; }
+.thumbnail:focus-visible {
+  outline: none;
+}
+
 .thumbnail:focus-visible::after {
   content: "";
   position: absolute;
@@ -96,7 +114,9 @@
   line-height: 1;
   cursor: pointer;
   opacity: 0.65;
-  transition: opacity 180ms ease, background 180ms ease;
+  transition:
+    opacity 180ms ease,
+    background 180ms ease;
 }
 
 .mainPicture:hover .arrow,

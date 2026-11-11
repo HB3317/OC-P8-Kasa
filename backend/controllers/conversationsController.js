@@ -1,4 +1,3 @@
-const { randomUUID } = require('crypto');
 const LIMIT = 5000;
 const fail = (res, error) => res.status(500).json({ error: 'Messagerie indisponible.' });
 async function list(req, res) {

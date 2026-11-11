@@ -8,12 +8,16 @@ type PropertyParams = { params: Promise<{ id: string }> };
 /**
  * Construit les métadonnées de référencement à partir du logement demandé.
  */
-export async function generateMetadata({ params }: PropertyParams): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PropertyParams): Promise<Metadata> {
   const { id } = await params;
   const property = await getProperty(id);
-  if (!property) return { title: "Logement introuvable | Kasa", robots: { index: false } };
+  if (!property)
+    return { title: "Logement introuvable | Kasa", robots: { index: false } };
 
-  const description = property.description?.trim() ||
+  const description =
+    property.description?.trim() ||
     `Découvrez ${property.title} sur Kasa : photos, équipements et informations sur le logement.`;
   return {
     title: `${property.title} | Kasa`,
@@ -21,7 +25,6 @@ export async function generateMetadata({ params }: PropertyParams): Promise<Meta
     alternates: { canonical: `/properties/${encodeURIComponent(property.id)}` },
   };
 }
-
 
 /**
  * Transforme un chemin d’image en URL absolue utilisable par les métadonnées.
@@ -32,7 +35,8 @@ function imageUrl(source: string, origin: string): string | null {
   if (/^https?:\/\//i.test(value)) return value;
   if (!value.startsWith("/")) return null;
   const imagePath = value.startsWith("/uploads/")
-    ? "/api/property-images/" + encodeURIComponent(value.slice("/uploads/".length))
+    ? "/api/property-images/" +
+      encodeURIComponent(value.slice("/uploads/".length))
     : value;
   return new URL(imagePath, origin).toString();
 }
@@ -54,7 +58,10 @@ export default async function PropertyPage({
 
   if (!property) notFound();
 
-  const origin = (process.env.SITE_URL || "http://localhost:3001").replace(/\/$/, "");
+  const origin = (process.env.SITE_URL || "http://localhost:3001").replace(
+    /\/$/,
+    "",
+  );
   const pictures = [property.cover, ...property.pictures]
     .filter((picture): picture is string => Boolean(picture))
     .map((picture) => imageUrl(picture, origin))
@@ -69,11 +76,13 @@ export default async function PropertyPage({
     ...(property.description ? { description: property.description } : {}),
     ...(pictures.length ? { image: [...new Set(pictures)] } : {}),
     ...(property.equipments.length
-      ? { amenityFeature: property.equipments.map((name) => ({
-          "@type": "LocationFeatureSpecification",
-          name,
-          value: true,
-        })) }
+      ? {
+          amenityFeature: property.equipments.map((name) => ({
+            "@type": "LocationFeatureSpecification",
+            name,
+            value: true,
+          })),
+        }
       : {}),
   };
 

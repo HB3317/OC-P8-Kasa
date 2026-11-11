@@ -27,14 +27,17 @@ export default function Header() {
 
   useEffect(() => {
     let cancelled = false;
-    httpClient.get<SessionResponse>("/api/auth/session", { cache: "no-store" })
+    httpClient
+      .get<SessionResponse>("/api/auth/session", { cache: "no-store" })
       .then((session) => {
         if (!cancelled) setAuthenticated(session.authenticated);
       })
       .catch(() => {
         if (!cancelled) setAuthenticated(null);
       });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [pathname]);
 
   const handleLogout = useCallback(async () => {
@@ -61,7 +64,11 @@ export default function Header() {
           <MainNavigation pathname={pathname} />
         </div>
 
-        <Link href="/" className={styles.desktopLogo} aria-label="Kasa - Accueil">
+        <Link
+          href="/"
+          className={styles.desktopLogo}
+          aria-label="Kasa - Accueil"
+        >
           <Logo aria-hidden="true" />
         </Link>
 
@@ -74,16 +81,29 @@ export default function Header() {
           />
         </div>
 
-        <Link href="/" className={styles.mobileLogo} aria-label="Kasa - Accueil" onClick={closeMenu}>
+        <Link
+          href="/"
+          className={styles.mobileLogo}
+          aria-label="Kasa - Accueil"
+          onClick={closeMenu}
+        >
           <LogoPicto aria-hidden="true" />
         </Link>
 
         <div className={styles.mobileToggle}>
-          <MenuToggleButton isOpen={isOpen} onToggle={toggleMenu} controlsId="mobile-navigation" />
+          <MenuToggleButton
+            isOpen={isOpen}
+            onToggle={toggleMenu}
+            controlsId="mobile-navigation"
+          />
         </div>
       </div>
 
-      {logoutError && <p className={styles.authError} role="alert">{logoutError}</p>}
+      {logoutError && (
+        <p className={styles.authError} role="alert">
+          {logoutError}
+        </p>
+      )}
       <MobileNavigation
         pathname={pathname}
         isOpen={isOpen}

@@ -11,9 +11,15 @@ type Session = { authenticated: boolean };
  */
 export function getGuestFavorites(): string[] {
   try {
-    const value: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
-    return Array.isArray(value) ? [...new Set(value.filter((id): id is string => typeof id === "string"))] : [];
-  } catch { return []; }
+    const value: unknown = JSON.parse(
+      localStorage.getItem(STORAGE_KEY) ?? "[]",
+    );
+    return Array.isArray(value)
+      ? [...new Set(value.filter((id): id is string => typeof id === "string"))]
+      : [];
+  } catch {
+    return [];
+  }
 }
 
 /**
@@ -24,10 +30,19 @@ export function saveGuestFavorites(ids: string[]) {
 }
 
 export const favoriteService = {
-  session: () => httpClient.get<Session>("/api/auth/session", { cache: "no-store" }),
-  list: () => httpClient.get<Property[]>("/api/favorites", { cache: "no-store" }),
-  add: (id: string) => httpClient.post<{ ok: boolean }, Record<string, never>>(`/api/favorites/${encodeURIComponent(id)}`, {}),
-  remove: (id: string) => httpClient.delete<{ ok: boolean }>(`/api/favorites/${encodeURIComponent(id)}`),
+  session: () =>
+    httpClient.get<Session>("/api/auth/session", { cache: "no-store" }),
+  list: () =>
+    httpClient.get<Property[]>("/api/favorites", { cache: "no-store" }),
+  add: (id: string) =>
+    httpClient.post<{ ok: boolean }, Record<string, never>>(
+      `/api/favorites/${encodeURIComponent(id)}`,
+      {},
+    ),
+  remove: (id: string) =>
+    httpClient.delete<{ ok: boolean }>(
+      `/api/favorites/${encodeURIComponent(id)}`,
+    ),
 };
 
 /**
@@ -47,7 +62,9 @@ export async function synchronizeGuestFavorites(): Promise<void> {
       remaining.splice(remaining.indexOf(id), 1);
       saveGuestFavorites(remaining);
     } catch {
-      // L’identifiant reste disponible pour une nouvelle tentative.
+      /**
+       * L’identifiant reste disponible pour une nouvelle tentative.
+       */
     }
   }
 }

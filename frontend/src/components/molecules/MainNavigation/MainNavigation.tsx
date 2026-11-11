@@ -5,14 +5,9 @@ type MainNavigationProps = {
   pathname: string;
 };
 
-export default function MainNavigation({
-  pathname,
-}: MainNavigationProps) {
+export default function MainNavigation({ pathname }: MainNavigationProps) {
   return (
-    <nav
-      aria-label="Navigation principale"
-      className={styles.navigation}
-    >
+    <nav aria-label="Navigation principale" className={styles.navigation}>
       <NavLink href="/" isActive={pathname === "/"}>
         Accueil
       </NavLink>

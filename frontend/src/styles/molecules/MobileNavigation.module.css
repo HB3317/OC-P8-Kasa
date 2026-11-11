@@ -74,7 +74,15 @@
     font-weight: 400;
     text-align: left;
   }
-  .links .authAction { cursor: pointer; }
-  .links .authAction:disabled { opacity: 0.6; cursor: wait; }
-  .links .authAction:focus-visible { outline: 2px solid var(--color-primary); outline-offset: -2px; }
+  .links .authAction {
+    cursor: pointer;
+  }
+  .links .authAction:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+  .links .authAction:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+  }
 }

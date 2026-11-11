@@ -14,7 +14,10 @@ export function messageTime(date: string | null): string {
   const parsed = parseUtc(date);
   return Number.isNaN(parsed.getTime())
     ? ""
-    : new Intl.DateTimeFormat("fr-FR", { hour: "2-digit", minute: "2-digit" }).format(parsed);
+    : new Intl.DateTimeFormat("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(parsed);
 }
 
 /**

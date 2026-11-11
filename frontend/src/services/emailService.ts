@@ -1,6 +1,5 @@
 import "server-only";
 
-
 /**
  * Envoie un email d’accueil via Resend après la création réussie d’un compte.
  * Si les variables d’environnement manquent, aucun envoi n’est tenté ; un rejet HTTP est propagé à la route appelante, qui préserve l’inscription.
@@ -15,7 +14,9 @@ export async function sendRegistrationConfirmation(input: {
   const sender = process.env.RESEND_FROM_EMAIL;
 
   if (!apiKey || !sender) {
-    console.warn("[email] Envoi non configuré : RESEND_API_KEY ou RESEND_FROM_EMAIL manquant.");
+    console.warn(
+      "[email] Envoi non configuré : RESEND_API_KEY ou RESEND_FROM_EMAIL manquant.",
+    );
     return;
   }
 

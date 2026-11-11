@@ -32,6 +32,16 @@
   cursor: pointer;
 }
 
-.action:hover { background: var(--color-surface-muted); }
-.action:focus-visible { outline: 2px solid var(--color-primary); outline-offset: -2px; }
-.action:disabled { opacity: 0.55; cursor: wait; }
+.action:hover {
+  background: var(--color-surface-muted);
+}
+
+.action:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.action:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}

@@ -12,7 +12,6 @@ export class HttpError extends Error {
 
 type RequestOptions = Omit<RequestInit, "method" | "body">;
 
-
 /**
  * Unifie les requêtes HTTP, le traitement JSON et les erreurs pour les services clients et serveur.
  * @param url URL de destination.
@@ -29,7 +28,8 @@ async function request<TResponse, TBody = undefined>(
 ): Promise<TResponse> {
   const headers = new Headers(options.headers);
   const hasBody = body !== undefined;
-  const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
+  const isFormData =
+    typeof FormData !== "undefined" && body instanceof FormData;
 
   if (hasBody && !isFormData && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
@@ -59,7 +59,9 @@ async function request<TResponse, TBody = undefined>(
 
   if (!response.ok) {
     const message =
-      typeof data === "object" && data !== null && "error" in data &&
+      typeof data === "object" &&
+      data !== null &&
+      "error" in data &&
       typeof data.error === "string"
         ? data.error
         : `Erreur HTTP ${response.status}.`;
@@ -69,16 +71,25 @@ async function request<TResponse, TBody = undefined>(
 }
 
 export const httpClient = {
-  request: <TResponse>(url: string, method: "POST" | "DELETE", options?: RequestOptions) =>
-    request<TResponse>(url, method, undefined, options),
+  request: <TResponse>(
+    url: string,
+    method: "POST" | "DELETE",
+    options?: RequestOptions,
+  ) => request<TResponse>(url, method, undefined, options),
   get: <TResponse>(url: string, options?: RequestOptions) =>
     request<TResponse>(url, "GET", undefined, options),
-  post: <TResponse, TBody>(url: string, body: TBody, options?: RequestOptions) =>
-    request<TResponse, TBody>(url, "POST", body, options),
+  post: <TResponse, TBody>(
+    url: string,
+    body: TBody,
+    options?: RequestOptions,
+  ) => request<TResponse, TBody>(url, "POST", body, options),
   put: <TResponse, TBody>(url: string, body: TBody, options?: RequestOptions) =>
     request<TResponse, TBody>(url, "PUT", body, options),
-  patch: <TResponse, TBody>(url: string, body: TBody, options?: RequestOptions) =>
-    request<TResponse, TBody>(url, "PATCH", body, options),
+  patch: <TResponse, TBody>(
+    url: string,
+    body: TBody,
+    options?: RequestOptions,
+  ) => request<TResponse, TBody>(url, "PATCH", body, options),
   delete: <TResponse>(url: string, options?: RequestOptions) =>
     request<TResponse>(url, "DELETE", undefined, options),
 };

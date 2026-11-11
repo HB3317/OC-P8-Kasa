@@ -16,5 +16,11 @@
   cursor: pointer;
 }
 
-.retryButton:hover { background: var(--color-primary-hover); }
-.retryButton:focus-visible { outline: 2px solid var(--color-text-primary); outline-offset: 3px; }
+.retryButton:hover {
+  background: var(--color-primary-hover);
+}
+
+.retryButton:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 3px;
+}

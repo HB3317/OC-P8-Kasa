@@ -3,8 +3,6 @@ import { serverHttpClient } from "@/services/serverHttpClient";
 import { HttpError } from "@/services/httpClient";
 import type { AuthResult, AuthUser } from "@/types/auth";
 
-
-
 const COOKIE_NAME = "kasa_session";
 const SESSION_DURATION = 7 * 24 * 60 * 60;
 
@@ -29,8 +27,8 @@ export class AuthError extends Error {
   }
 }
 
-// Toutes les opérations d’authentification passent par l’API Express.
 /**
+ * Toutes les opérations d’authentification passent par l’API Express.
  * Transmet les identifiants à Express et convertit ses erreurs en messages adaptés au frontend.
  * @param {string} path Action d’authentification demandée.
  * @returns {Promise<AuthResult>} Utilisateur et jeton renvoyés par Express.
@@ -40,10 +38,10 @@ async function requestAuth(
   body: Credentials | Registration,
 ): Promise<AuthResult> {
   try {
-    const result = await serverHttpClient.post<AuthResult, Credentials | Registration>(
-      `/auth/${path}`,
-      body,
-    );
+    const result = await serverHttpClient.post<
+      AuthResult,
+      Credentials | Registration
+    >(`/auth/${path}`, body);
 
     if (!result.token || !result.user?.id) {
       throw new AuthError("Réponse d'authentification invalide.", 502);
@@ -52,10 +50,14 @@ async function requestAuth(
   } catch (error) {
     if (error instanceof AuthError) throw error;
     if (error instanceof HttpError) {
-      if (error.status === 401) throw new AuthError("Identifiants incorrects.", 401);
-      if (error.status === 409) throw new AuthError("Cette adresse email est déjà utilisée.", 409);
-      if (error.status === 400) throw new AuthError("Vérifiez les informations saisies.", 400);
-      if (error.status === 503) throw new AuthError("Serveur indisponible.", 503);
+      if (error.status === 401)
+        throw new AuthError("Identifiants incorrects.", 401);
+      if (error.status === 409)
+        throw new AuthError("Cette adresse email est déjà utilisée.", 409);
+      if (error.status === 400)
+        throw new AuthError("Vérifiez les informations saisies.", 400);
+      if (error.status === 503)
+        throw new AuthError("Serveur indisponible.", 503);
     }
     throw new AuthError("Une erreur est survenue.", 502);
   }
@@ -64,9 +66,7 @@ async function requestAuth(
 /**
  * Authentifie un compte via Express et retourne le résultat de session.
  */
-export async function loginUser(
-  credentials: Credentials,
-): Promise<AuthResult> {
+export async function loginUser(credentials: Credentials): Promise<AuthResult> {
   return requestAuth("login", credentials);
 }
 
@@ -79,7 +79,6 @@ export async function registerUser(
   return requestAuth("register", registration);
 }
 
-// Le cookie HttpOnly rend le JWT inaccessible au JavaScript du navigateur.
 /**
  * Enregistre le JWT dans un cookie de session HttpOnly pour éviter son accès par JavaScript client.
  */
@@ -95,9 +94,8 @@ export async function createSession(token: string) {
   });
 }
 
-// Supprimer le cookie invalide la session côté navigateur.
 /**
- * Supprime le cookie de session lors de la déconnexion.
+ * Supprimer le cookie invalide la session côté navigateur.
  */
 export async function deleteSession() {
   const cookieStore = await cookies();
@@ -105,7 +103,6 @@ export async function deleteSession() {
   cookieStore.delete(COOKIE_NAME);
 }
 
-// La session est résolue à partir du cookie côté serveur.
 /**
  * Résout l’utilisateur de la session à partir du cookie ; Express reste responsable de valider le JWT.
  */
@@ -116,11 +113,12 @@ export async function getSessionUser(): Promise<AuthUser | null> {
   if (!token) return null;
 
   try {
-    // Le contenu du JWT est décodé uniquement pour retrouver l’identifiant.
-    // Express reste chargé de vérifier l’authenticité du jeton.
+    /**
+     * Le contenu du JWT est décodé uniquement pour retrouver l’identifiant.
+     * Express reste chargé de vérifier l’authenticité du jeton.
+     */
     const payload = JSON.parse(
-      Buffer.from(token.split(".")[1], "base64url")
-        .toString("utf8"),
+      Buffer.from(token.split(".")[1], "base64url").toString("utf8"),
     );
 
     const id = payload.id;
@@ -129,7 +127,10 @@ export async function getSessionUser(): Promise<AuthUser | null> {
       return null;
     }
 
-    const user = await serverHttpClient.get<AuthUser>(`/api/users/${id}`, token);
+    const user = await serverHttpClient.get<AuthUser>(
+      `/api/users/${id}`,
+      token,
+    );
     return {
       id: user.id,
       name: user.name,

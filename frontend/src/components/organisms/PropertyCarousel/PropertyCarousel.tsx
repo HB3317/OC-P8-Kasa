@@ -25,7 +25,7 @@ export default function PropertyCarousel({ images, title, children }: Props) {
 
   const thumbnails = Array.from(
     { length: Math.min(4, Math.max(0, count - 1)) },
-    (_, position) => (activeIndex + position + 1) % count
+    (_, position) => (activeIndex + position + 1) % count,
   );
 
   function previous() {
@@ -103,7 +103,11 @@ export default function PropertyCarousel({ images, title, children }: Props) {
               <ChevronIcon direction="right" />
             </button>
 
-            <span className={styles.counter} aria-live="polite" aria-atomic="true">
+            <span
+              className={styles.counter}
+              aria-live="polite"
+              aria-atomic="true"
+            >
               {activeIndex + 1} / {count}
             </span>
           </>

@@ -7,11 +7,22 @@ type AuthActionButtonProps = {
   onClick: () => void;
 };
 
-export default function AuthActionButton({ isOpen, disabled, onClick }: AuthActionButtonProps) {
+export default function AuthActionButton({
+  isOpen,
+  disabled,
+  onClick,
+}: AuthActionButtonProps) {
   return (
-    <button type="button" className={styles.button} disabled={disabled}
-      onClick={onClick} aria-label="Menu de connexion" aria-expanded={isOpen}
-      aria-haspopup="true" title="Connexion / déconnexion">
+    <button
+      type="button"
+      className={styles.button}
+      disabled={disabled}
+      onClick={onClick}
+      aria-label="Menu de connexion"
+      aria-expanded={isOpen}
+      aria-haspopup="true"
+      title="Connexion / déconnexion"
+    >
       <PowerIcon />
     </button>
   );

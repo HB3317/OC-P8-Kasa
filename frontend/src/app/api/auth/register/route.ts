@@ -1,11 +1,7 @@
 import { checkOrigin } from "@/utils/checkOrigin";
 import { sendRegistrationConfirmation } from "@/services/emailService";
 import { NextResponse } from "next/server";
-import {
-  AuthError,
-  createSession,
-  registerUser,
-} from "@/services/authService";
+import { AuthError, createSession, registerUser } from "@/services/authService";
 
 /**
  * Crée un compte via Express, ouvre la session et tente l’envoi d’un email de confirmation.
@@ -53,22 +49,13 @@ export async function POST(request: Request) {
       console.error("[email] Confirmation non envoyée :", emailError);
     }
 
-    return NextResponse.json(
-      { user },
-      { status: 201 },
-    );
+    return NextResponse.json({ user }, { status: 201 });
   } catch (error) {
-    const status =
-      error instanceof AuthError ? error.status : 400;
+    const status = error instanceof AuthError ? error.status : 400;
 
     const message =
-      error instanceof AuthError
-        ? error.message
-        : "Requête invalide.";
+      error instanceof AuthError ? error.message : "Requête invalide.";
 
-    return NextResponse.json(
-      { error: message },
-      { status },
-    );
+    return NextResponse.json({ error: message }, { status });
   }
 }

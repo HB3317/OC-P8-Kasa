@@ -9,16 +9,31 @@ type Props = {
   userId: number;
   peerName: string;
   peerPicture: string | null;
+  userPicture: string | null;
 };
 
-export default function MessageItem({ message, userId, peerName, peerPicture }: Props) {
+export default function MessageItem({
+  message,
+  userId,
+  peerName,
+  peerPicture,
+  userPicture,
+}: Props) {
   const mine = message.sender_id === userId;
+  const avatar = mine ? userPicture : peerPicture;
 
   return (
     <div className={`${styles.messageRow} ${mine ? styles.mine : ""}`}>
       <span className={styles.messageAvatar} aria-hidden="true">
-        {!mine && peerPicture && (
-          <Image src={resolveUploadImage(peerPicture)} alt="" fill sizes="25px" unoptimized className={styles.avatarImage} />
+        {avatar && (
+          <Image
+            src={resolveUploadImage(avatar)}
+            alt=""
+            fill
+            sizes="25px"
+            unoptimized
+            className={styles.avatarImage}
+          />
         )}
       </span>
       <div className={styles.messageMain}>

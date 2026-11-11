@@ -17,8 +17,7 @@ export function useMobileMenu(pathname: string) {
   });
 
   // Un menu ouvert sur une autre page doit être considéré comme fermé.
-  const isOpen =
-    menuState.pathname === pathname && menuState.open;
+  const isOpen = menuState.pathname === pathname && menuState.open;
 
   function closeMenu() {
     setMenuState({ pathname, open: false });

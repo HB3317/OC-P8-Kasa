@@ -7,7 +7,11 @@ export const metadata: Metadata = {
   description: "Connectez-vous à votre compte Kasa.",
 };
 
-export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string }>;
+}) {
   const { next } = await searchParams;
   return <LoginTemplate nextPath={next} />;
 }

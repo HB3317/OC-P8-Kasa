@@ -18,7 +18,14 @@ type Props = {
 /**
  * Affiche les photographies dans une boîte de dialogue accessible pilotée par le carrousel.
  */
-export default function PropertyLightbox({ images, title, activeIndex, onPrevious, onNext, onClose }: Props) {
+export default function PropertyLightbox({
+  images,
+  title,
+  activeIndex,
+  onPrevious,
+  onNext,
+  onClose,
+}: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -27,14 +34,18 @@ export default function PropertyLightbox({ images, title, activeIndex, onPreviou
     if (!dialog) return;
     dialog.showModal();
     closeRef.current?.focus();
-    return () => { if (dialog.open) dialog.close(); };
+    return () => {
+      if (dialog.open) dialog.close();
+    };
   }, []);
 
   function handleKeyDown(event: KeyboardEvent<HTMLDialogElement>) {
     if (event.key === "Tab") {
       // Le parcours au clavier reste limité aux commandes de la visionneuse.
       const controls = Array.from(
-        event.currentTarget.querySelectorAll<HTMLButtonElement>("button:not([disabled])")
+        event.currentTarget.querySelectorAll<HTMLButtonElement>(
+          "button:not([disabled])",
+        ),
       );
       if (controls.length === 0) return;
 
@@ -55,8 +66,14 @@ export default function PropertyLightbox({ images, title, activeIndex, onPreviou
     }
 
     if (images.length <= 1) return;
-    if (event.key === "ArrowLeft") { event.preventDefault(); onPrevious(); }
-    if (event.key === "ArrowRight") { event.preventDefault(); onNext(); }
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      onPrevious();
+    }
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      onNext();
+    }
   }
 
   function handleBackdropClick(event: MouseEvent<HTMLDialogElement>) {
@@ -68,12 +85,21 @@ export default function PropertyLightbox({ images, title, activeIndex, onPreviou
       ref={dialogRef}
       className={styles.dialog}
       aria-label={`Photos agrandies : ${title}`}
-      onCancel={(event) => { event.preventDefault(); onClose(); }}
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
       onClick={handleBackdropClick}
       onKeyDown={handleKeyDown}
     >
       <div className={styles.viewer}>
-        <button ref={closeRef} type="button" className={styles.close} aria-label="Fermer la visionneuse" onClick={onClose}>
+        <button
+          ref={closeRef}
+          type="button"
+          className={styles.close}
+          aria-label="Fermer la visionneuse"
+          onClick={onClose}
+        >
           <CloseIcon />
         </button>
         <div className={styles.photo}>
@@ -87,13 +113,25 @@ export default function PropertyLightbox({ images, title, activeIndex, onPreviou
         </div>
         {images.length > 1 && (
           <>
-            <button type="button" className={`${styles.arrow} ${styles.previous}`} aria-label="Photo précédente" onClick={onPrevious}>
+            <button
+              type="button"
+              className={`${styles.arrow} ${styles.previous}`}
+              aria-label="Photo précédente"
+              onClick={onPrevious}
+            >
               <ChevronIcon direction="left" />
             </button>
-            <button type="button" className={`${styles.arrow} ${styles.next}`} aria-label="Photo suivante" onClick={onNext}>
+            <button
+              type="button"
+              className={`${styles.arrow} ${styles.next}`}
+              aria-label="Photo suivante"
+              onClick={onNext}
+            >
               <ChevronIcon direction="right" />
             </button>
-            <span className={styles.counter} aria-live="polite">{activeIndex + 1} / {images.length}</span>
+            <span className={styles.counter} aria-live="polite">
+              {activeIndex + 1} / {images.length}
+            </span>
           </>
         )}
       </div>

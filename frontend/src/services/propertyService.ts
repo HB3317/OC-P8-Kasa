@@ -14,6 +14,12 @@ export function getProperties(): Promise<Property[]> {
  * Récupère un logement ; retourne null pour une ressource absente et propage les autres erreurs.
  */
 export async function getProperty(id: string): Promise<PropertyDetail | null> {
-  try { return await serverHttpClient.get<PropertyDetail>(`/api/properties/${encodeURIComponent(id)}`); }
-  catch (error) { if (error instanceof HttpError && error.status === 404) return null; throw error; }
+  try {
+    return await serverHttpClient.get<PropertyDetail>(
+      `/api/properties/${encodeURIComponent(id)}`,
+    );
+  } catch (error) {
+    if (error instanceof HttpError && error.status === 404) return null;
+    throw error;
+  }
 }

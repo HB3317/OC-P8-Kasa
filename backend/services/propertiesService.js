@@ -42,7 +42,7 @@ async function listProperties(db) {
       SELECT p.*, u.name AS host_name, u.picture AS host_picture
       FROM properties p
       JOIN users u ON u.id = p.host_id
-      ORDER BY p.title ASC
+      ORDER BY p.title COLLATE NOCASE ASC
     `);
   return rows.map(mapPropertyRow);
 }

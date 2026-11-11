@@ -36,23 +36,27 @@ export default function RegisterForm({ nextPath }: { nextPath?: string }) {
     const password = String(form.get("password") ?? "");
 
     if (password.length < 6) {
-      setNotice(
-        "Le mot de passe doit contenir au moins 6 caractères.",
-      );
+      setNotice("Le mot de passe doit contenir au moins 6 caractères.");
       setIsSubmitting(false);
       return;
     }
 
     try {
-      await register({ name: `${firstName} ${lastName}`.trim(), email, password });
+      await register({
+        name: `${firstName} ${lastName}`.trim(),
+        email,
+        password,
+      });
 
       await synchronizeGuestFavorites().catch(() => {});
       router.replace(safeRedirect(nextPath));
       router.refresh();
     } catch (error) {
-      setNotice(error instanceof HttpError && error.status !== 503
-        ? error.message
-        : "Impossible de contacter le serveur.");
+      setNotice(
+        error instanceof HttpError && error.status !== 503
+          ? error.message
+          : "Impossible de contacter le serveur.",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -66,10 +70,9 @@ export default function RegisterForm({ nextPath }: { nextPath?: string }) {
         </h1>
 
         <p className={styles.description}>
-          Créez votre compte et commencez à voyager autrement :
-          réservez des logements uniques, découvrez de nouvelles
-          destinations et partagez vos propres lieux avec d&apos;autres
-          voyageurs.
+          Créez votre compte et commencez à voyager autrement : réservez des
+          logements uniques, découvrez de nouvelles destinations et partagez vos
+          propres lieux avec d&apos;autres voyageurs.
         </p>
       </div>
 
@@ -118,11 +121,7 @@ export default function RegisterForm({ nextPath }: { nextPath?: string }) {
           </span>
         </label>
 
-        <button
-          type="submit"
-          className={styles.submit}
-          disabled={isSubmitting}
-        >
+        <button type="submit" className={styles.submit} disabled={isSubmitting}>
           {isSubmitting ? "Inscription..." : "S'inscrire"}
         </button>
 
@@ -134,7 +133,11 @@ export default function RegisterForm({ nextPath }: { nextPath?: string }) {
 
         <p className={styles.loginLink}>
           Déjà membre ?{" "}
-          <Link href={`/login?next=${encodeURIComponent(safeRedirect(nextPath))}`}>Se connecter</Link>
+          <Link
+            href={`/login?next=${encodeURIComponent(safeRedirect(nextPath))}`}
+          >
+            Se connecter
+          </Link>
         </p>
       </form>
     </section>

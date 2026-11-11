@@ -48,3 +48,23 @@ npm run dev -- -p 3001
 ```
 
 Ouvrir **http://localhost:3001** dans le navigateur. Pour lancer la version de production locale du frontend, exécuter `npm run build`, puis `npm start` dans `frontend` (le script `start` du projet est configuré pour le port 3001).
+
+## Configuration de l'URL publique
+
+Le fichier `frontend/src/config/URL.ts` contient la constante `URL_PUBLIC`, utilisée pour vérifier l'origine de certaines requêtes HTTP. Sa valeur par défaut est `https://example.com` et doit être remplacée par l'URL réelle du site lors du déploiement. En développement local, les requêtes provenant de la même origine que le serveur Next.js sont autorisées.
+
+## Tests automatisés
+
+Le frontend utilise **Vitest** et **React Testing Library** pour tester le carrousel et la gestion des favoris. Les dépendances de test sont déjà présentes dans `frontend/package.json` et sont installées avec `npm install`. Aucune installation supplémentaire n'est nécessaire.
+
+Pour exécuter les tests, depuis le dossier `frontend` :
+
+```bash
+npm test
+```
+
+Pour lancer les tests en mode surveillance :
+
+```bash
+npm run test:watch
+```

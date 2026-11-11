@@ -8,10 +8,17 @@ type Props = {
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
 
-export default function MessageComposer({ draft, busy, onDraftChange, onSubmit }: Props) {
+export default function MessageComposer({
+  draft,
+  busy,
+  onDraftChange,
+  onSubmit,
+}: Props) {
   return (
     <form className={styles.compose} onSubmit={onSubmit}>
-      <label className={styles.sr} htmlFor="message-text">Envoyer un message</label>
+      <label className={styles.sr} htmlFor="message-text">
+        Envoyer un message
+      </label>
       <textarea
         id="message-text"
         value={draft}
@@ -20,7 +27,11 @@ export default function MessageComposer({ draft, busy, onDraftChange, onSubmit }
         placeholder="Envoyer un message"
         rows={2}
       />
-      <button disabled={busy || !draft.trim()} type="submit" aria-label="Envoyer le message">
+      <button
+        disabled={busy || !draft.trim()}
+        type="submit"
+        aria-label="Envoyer le message"
+      >
         ↑
       </button>
     </form>

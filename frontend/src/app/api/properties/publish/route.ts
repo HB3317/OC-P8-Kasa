@@ -2,21 +2,38 @@ import { NextRequest, NextResponse } from "next/server";
 import { createSession, getSessionToken } from "@/services/authService";
 import { API_URL } from "@/config/api";
 
-type CurrentUser = { id: number; name: string; picture: string | null; role: "client" | "owner" | "admin" };
+type CurrentUser = {
+  id: number;
+  name: string;
+  picture: string | null;
+  role: "client" | "owner" | "admin";
+};
 type PublishedProperty = { id: string; host?: { id: number } };
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 
 /**
  * Effectue un appel authentifié vers Express pour les étapes de publication.
  */
-async function api<T>(path: string, token: string, method = "GET", body?: BodyInit, isJson = false): Promise<T> {
+async function api<T>(
+  path: string,
+  token: string,
+  method = "GET",
+  body?: BodyInit,
+  isJson = false,
+): Promise<T> {
   const response = await fetch(`${API_URL}${path}`, {
-    method, cache: "no-store",
-    headers: { Authorization: `Bearer ${token}`, ...(isJson ? { "Content-Type": "application/json" } : {}) },
+    method,
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      ...(isJson ? { "Content-Type": "application/json" } : {}),
+    },
     body,
   });
-  const result = await response.json().catch(() => null) as (T & { error?: string }) | null;
-  if (!response.ok) throw new Error(result?.error || `Erreur API (${response.status}).`);
+  const result = (await response.json().catch(() => null)) as
+    (T & { error?: string }) | null;
+  if (!response.ok)
+    throw new Error(result?.error || `Erreur API (${response.status}).`);
   if (!result) throw new Error("Réponse API invalide.");
   return result;
 }
@@ -24,12 +41,22 @@ async function api<T>(path: string, token: string, method = "GET", body?: BodyIn
 /**
  * Téléverse une image auprès d’Express et récupère le chemin du fichier publié.
  */
-async function upload(file: File, token: string, purpose: string): Promise<string> {
+async function upload(
+  file: File,
+  token: string,
+  purpose: string,
+): Promise<string> {
   const body = new FormData();
   body.append("file", file);
   body.append("purpose", purpose);
-  const result = await api<{ url: string }>("/api/uploads/image", token, "POST", body);
-  if (!result.url?.startsWith("/uploads/")) throw new Error("URL de photo invalide.");
+  const result = await api<{ url: string }>(
+    "/api/uploads/image",
+    token,
+    "POST",
+    body,
+  );
+  if (!result.url?.startsWith("/uploads/"))
+    throw new Error("URL de photo invalide.");
   return result.url;
 }
 
@@ -39,9 +66,17 @@ async function upload(file: File, token: string, purpose: string): Promise<strin
  */
 export async function POST(request: NextRequest) {
   const origin = request.headers.get("origin");
-  if (!origin || origin !== request.nextUrl.origin) return NextResponse.json({ error: "Origine non autorisée." }, { status: 403 });
+  if (!origin || origin !== request.nextUrl.origin)
+    return NextResponse.json(
+      { error: "Origine non autorisée." },
+      { status: 403 },
+    );
   const originalToken = await getSessionToken();
-  if (!originalToken) return NextResponse.json({ error: "Connexion nécessaire." }, { status: 401 });
+  if (!originalToken)
+    return NextResponse.json(
+      { error: "Connexion nécessaire." },
+      { status: 401 },
+    );
 
   let token = originalToken;
   let initialRole: CurrentUser["role"] | undefined;
@@ -52,8 +87,11 @@ export async function POST(request: NextRequest) {
   const uploaded: string[] = [];
 
   try {
-    const payload = JSON.parse(Buffer.from(token.split(".")[1], "base64url").toString("utf8")) as { id?: number; email?: string };
-    if (!Number.isSafeInteger(payload.id) || !payload.id || payload.id < 1) return NextResponse.json({ error: "Session invalide." }, { status: 401 });
+    const payload = JSON.parse(
+      Buffer.from(token.split(".")[1], "base64url").toString("utf8"),
+    ) as { id?: number; email?: string };
+    if (!Number.isSafeInteger(payload.id) || !payload.id || payload.id < 1)
+      return NextResponse.json({ error: "Session invalide." }, { status: 401 });
     userId = payload.id;
     const user = await api<CurrentUser>(`/api/users/${userId}`, token);
     initialRole = user.role;
@@ -62,61 +100,179 @@ export async function POST(request: NextRequest) {
     const description = String(form.get("description") ?? "").trim();
     const location = String(form.get("location") ?? "").trim();
     const price = Number(form.get("price_per_night"));
-    const equipments = JSON.parse(String(form.get("equipments") ?? "[]")) as unknown;
+    const equipments = JSON.parse(
+      String(form.get("equipments") ?? "[]"),
+    ) as unknown;
     const tags = JSON.parse(String(form.get("tags") ?? "[]")) as unknown;
     const cover = form.get("cover");
     const pictures = form.getAll("pictures");
     const avatar = form.get("avatar");
-    const validStrings = (items: unknown, max: number) => Array.isArray(items) && items.length <= max && items.every(x => typeof x === "string" && x.trim().length > 0 && x.length <= 60);
-    if (title.length < 5 || title.length > 120 || description.length < 20 || description.length > 5000 || location.length < 2 || location.length > 120 || !Number.isFinite(price) || price < 1 || price > 100000 || !Number.isInteger(price) || !validStrings(equipments, 30) || (equipments as string[]).length === 0 || !validStrings(tags, 20)) {
-      return NextResponse.json({ error: "Vérifie les champs obligatoires du formulaire." }, { status: 400 });
+    const validStrings = (items: unknown, max: number) =>
+      Array.isArray(items) &&
+      items.length <= max &&
+      items.every(
+        (x) => typeof x === "string" && x.trim().length > 0 && x.length <= 60,
+      );
+    if (
+      title.length < 5 ||
+      title.length > 120 ||
+      description.length < 20 ||
+      description.length > 5000 ||
+      location.length < 2 ||
+      location.length > 120 ||
+      !Number.isFinite(price) ||
+      price < 1 ||
+      price > 100000 ||
+      !Number.isInteger(price) ||
+      !validStrings(equipments, 30) ||
+      (equipments as string[]).length === 0 ||
+      !validStrings(tags, 20)
+    ) {
+      return NextResponse.json(
+        { error: "Vérifie les champs obligatoires du formulaire." },
+        { status: 400 },
+      );
     }
-    if (!(cover instanceof File) || pictures.length > 12 || pictures.some(f => !(f instanceof File)) || (avatar !== null && !(avatar instanceof File))) return NextResponse.json({ error: "Photos invalides." }, { status: 400 });
-    const files = [cover, ...pictures as File[], ...(avatar instanceof File ? [avatar] : [])];
-    if (files.some(f => f.size <= 0 || f.size > MAX_IMAGE_SIZE || !["image/jpeg", "image/png", "image/webp"].includes(f.type))) return NextResponse.json({ error: "Images JPEG/PNG/WebP uniquement, 10 Mo maximum." }, { status: 400 });
+    if (
+      !(cover instanceof File) ||
+      pictures.length > 12 ||
+      pictures.some((f) => !(f instanceof File)) ||
+      (avatar !== null && !(avatar instanceof File))
+    )
+      return NextResponse.json({ error: "Photos invalides." }, { status: 400 });
+    const files = [
+      cover,
+      ...(pictures as File[]),
+      ...(avatar instanceof File ? [avatar] : []),
+    ];
+    if (
+      files.some(
+        (f) =>
+          f.size <= 0 ||
+          f.size > MAX_IMAGE_SIZE ||
+          !["image/jpeg", "image/png", "image/webp"].includes(f.type),
+      )
+    )
+      return NextResponse.json(
+        { error: "Images JPEG/PNG/WebP uniquement, 10 Mo maximum." },
+        { status: 400 },
+      );
 
     if (initialRole === "client") {
       const password = String(form.get("confirmation_password") ?? "");
-      if (!password || !payload.email) return NextResponse.json({ error: "Confirme ton mot de passe pour publier ta première annonce." }, { status: 400 });
+      if (!password || !payload.email)
+        return NextResponse.json(
+          {
+            error:
+              "Confirme ton mot de passe pour publier ta première annonce.",
+          },
+          { status: 400 },
+        );
       // Vérifier les identifiants avant tout changement de rôle.
-      await api<{ token: string }>("/auth/login", "", "POST", JSON.stringify({ email: payload.email, password }), true);
-      await api<CurrentUser>(`/api/users/${userId}`, token, "PATCH", JSON.stringify({ role: "owner" }), true);
+      await api<{ token: string }>(
+        "/auth/login",
+        "",
+        "POST",
+        JSON.stringify({ email: payload.email, password }),
+        true,
+      );
+      await api<CurrentUser>(
+        `/api/users/${userId}`,
+        token,
+        "PATCH",
+        JSON.stringify({ role: "owner" }),
+        true,
+      );
       promoted = true;
-      const renewed = await api<{ token: string }>("/auth/login", "", "POST", JSON.stringify({ email: payload.email, password }), true);
-      if (!renewed.token) throw new Error("Renouvellement de session impossible.");
+      const renewed = await api<{ token: string }>(
+        "/auth/login",
+        "",
+        "POST",
+        JSON.stringify({ email: payload.email, password }),
+        true,
+      );
+      if (!renewed.token)
+        throw new Error("Renouvellement de session impossible.");
       token = renewed.token;
     }
 
-    const coverUrl = await upload(cover, token, "property-cover"); uploaded.push(coverUrl);
+    const coverUrl = await upload(cover, token, "property-cover");
+    uploaded.push(coverUrl);
     const imageUrls: string[] = [];
-    for (const file of pictures as File[]) { const url = await upload(file, token, "property-picture"); uploaded.push(url); imageUrls.push(url); }
+    for (const file of pictures as File[]) {
+      const url = await upload(file, token, "property-picture");
+      uploaded.push(url);
+      imageUrls.push(url);
+    }
     // Ne remplacer la photo de profil que lorsqu’une nouvelle image a été sélectionnée.
     // Après cet appel, une réponse perdue ne prouve pas que la création a échoué.
     creationAttempted = true;
-    const result = await api<PublishedProperty>("/api/properties", token, "POST", JSON.stringify({
-      title, description, location, price_per_night: price,
-      host_id: userId, cover: coverUrl, pictures: imageUrls, equipments, tags,
-    }), true);
-    if (!result.id) throw new Error("La création n'a pas retourné d'identifiant.");
+    const result = await api<PublishedProperty>(
+      "/api/properties",
+      token,
+      "POST",
+      JSON.stringify({
+        title,
+        description,
+        location,
+        price_per_night: price,
+        host_id: userId,
+        cover: coverUrl,
+        pictures: imageUrls,
+        equipments,
+        tags,
+      }),
+      true,
+    );
+    if (!result.id)
+      throw new Error("La création n'a pas retourné d'identifiant.");
     propertyCreated = true;
     if (avatar instanceof File) {
-      try { const avatarUrl = await upload(avatar, token, "user-picture"); uploaded.push(avatarUrl); await api<CurrentUser>(`/api/users/${userId}`, token, "PATCH", JSON.stringify({ picture: avatarUrl }), true); }
-      catch { /* La photo de profil est facultative : ne pas annuler une annonce publiée. */ }
+      try {
+        const avatarUrl = await upload(avatar, token, "user-picture");
+        uploaded.push(avatarUrl);
+        await api<CurrentUser>(
+          `/api/users/${userId}`,
+          token,
+          "PATCH",
+          JSON.stringify({ picture: avatarUrl }),
+          true,
+        );
+      } catch {
+        /* La photo de profil est facultative : ne pas annuler une annonce publiée. */
+      }
     }
     // L’annonce est déjà enregistrée : un échec de cookie ne doit pas annuler la publication.
     let sessionWarning: string | undefined;
     if (promoted) {
-      try { await createSession(token); }
-      catch { sessionWarning = "Annonce publiée, mais actualisation de session impossible. Reconnecte-toi pour utiliser ton compte propriétaire."; }
+      try {
+        await createSession(token);
+      } catch {
+        sessionWarning =
+          "Annonce publiée, mais actualisation de session impossible. Reconnecte-toi pour utiliser ton compte propriétaire.";
+      }
     }
-    return NextResponse.json({ id: result.id, ...(sessionWarning ? { warning: sessionWarning } : {}) }, { status: 201 });
+    return NextResponse.json(
+      { id: result.id, ...(sessionWarning ? { warning: sessionWarning } : {}) },
+      { status: 201 },
+    );
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Publication impossible.";
+    const message =
+      error instanceof Error ? error.message : "Publication impossible.";
     // Une restauration est sûre uniquement avant l’envoi de la demande de création.
     // Après POST, la réponse peut être perdue alors que le logement existe dans SQLite.
     if (!creationAttempted && !propertyCreated && uploaded.length) {
-      try { await api<unknown>("/api/uploads/images", token, "DELETE", JSON.stringify({ urls: uploaded }), true); }
-      catch { /* Best effort: orphan files are safer than deleting published pictures. */ }
+      try {
+        await api<unknown>(
+          "/api/uploads/images",
+          token,
+          "DELETE",
+          JSON.stringify({ urls: uploaded }),
+          true,
+        );
+      } catch {
+        /* Best effort: orphan files are safer than deleting published pictures. */
+      }
     }
     // N’annuler notre promotion de rôle que si cette requête n’a pas tenté la création.
     if (!creationAttempted && promoted && userId) {
@@ -124,16 +280,36 @@ export async function POST(request: NextRequest) {
       // Sans vérification possible, conserver le rôle hôte plutôt que rétrograder un propriétaire réel.
       let canRevert = false;
       try {
-        const listings = await api<Array<{ host?: { id?: number }; host_id?: number }>>("/api/properties", token);
-        canRevert = Array.isArray(listings) && listings.every(p => p.host?.id !== userId && p.host_id !== userId);
-      } catch { /* État incertain : ne pas rétrograder le rôle. */ }
-      if (canRevert) try { await api<CurrentUser>(`/api/users/${userId}`, token, "PATCH", JSON.stringify({ role: "client" }), true); }
-      catch { /* Conserver la cause initiale de l’échec. */ }
+        const listings = await api<
+          Array<{ host?: { id?: number }; host_id?: number }>
+        >("/api/properties", token);
+        canRevert =
+          Array.isArray(listings) &&
+          listings.every((p) => p.host?.id !== userId && p.host_id !== userId);
+      } catch {
+        /* État incertain : ne pas rétrograder le rôle. */
+      }
+      if (canRevert)
+        try {
+          await api<CurrentUser>(
+            `/api/users/${userId}`,
+            token,
+            "PATCH",
+            JSON.stringify({ role: "client" }),
+            true,
+          );
+        } catch {
+          /* Conserver la cause initiale de l’échec. */
+        }
     }
     if (creationAttempted && !propertyCreated) {
-      return NextResponse.json({
-        error: "Publication non confirmée. Vérifie tes annonces avant de réessayer pour éviter un doublon.",
-      }, { status: 409 });
+      return NextResponse.json(
+        {
+          error:
+            "Publication non confirmée. Vérifie tes annonces avant de réessayer pour éviter un doublon.",
+        },
+        { status: 409 },
+      );
     }
     return NextResponse.json({ error: message }, { status: 400 });
   }

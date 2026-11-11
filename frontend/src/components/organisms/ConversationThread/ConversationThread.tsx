@@ -10,6 +10,7 @@ type Props = {
   messages: Message[];
   messagesLoading: boolean;
   userId: number;
+  userPicture: string | null;
   mobileDetail: boolean;
   draft: string;
   busy: boolean;
@@ -27,6 +28,7 @@ export default function ConversationThread({
   messages,
   messagesLoading,
   userId,
+  userPicture,
   mobileDetail,
   draft,
   busy,
@@ -47,7 +49,9 @@ export default function ConversationThread({
       aria-label="Historique des messages"
     >
       <div className={styles.mobileBack}>
-        <button type="button" className={styles.back} onClick={onMobileBack}>← Retour</button>
+        <button type="button" className={styles.back} onClick={onMobileBack}>
+          ← Retour
+        </button>
       </div>
       {selected ? (
         <>
@@ -56,17 +60,23 @@ export default function ConversationThread({
               <p className={styles.empty}>Chargement des messages…</p>
             ) : messages.length === 0 ? (
               <p className={styles.empty}>
-                Commencez la conversation au sujet de « {selected.property_title} ».
+                Commencez la conversation au sujet de «{" "}
+                {selected.property_title} ».
               </p>
             ) : (
               messages.map((message, index) => (
                 <div key={message.id}>
-                  {(index === 0 || messageDay(message.created_at) !== messageDay(messages[index - 1].created_at)) && (
-                    <div className={styles.date}><span>{messageDay(message.created_at)}</span></div>
+                  {(index === 0 ||
+                    messageDay(message.created_at) !==
+                      messageDay(messages[index - 1].created_at)) && (
+                    <div className={styles.date}>
+                      <span>{messageDay(message.created_at)}</span>
+                    </div>
                   )}
                   <MessageItem
                     message={message}
                     userId={userId}
+                    userPicture={userPicture}
                     peerName={selected.peer_name}
                     peerPicture={selected.peer_picture}
                   />
@@ -75,12 +85,21 @@ export default function ConversationThread({
             )}
             <div ref={bottom} />
           </div>
-          <MessageComposer draft={draft} busy={busy} onDraftChange={onDraftChange} onSubmit={onSubmit} />
+          <MessageComposer
+            draft={draft}
+            busy={busy}
+            onDraftChange={onDraftChange}
+            onSubmit={onSubmit}
+          />
         </>
       ) : (
         <div className={styles.empty}>Sélectionnez une conversation.</div>
       )}
-      {error && <p role="alert" className={styles.error}>{error}</p>}
+      {error && (
+        <p role="alert" className={styles.error}>
+          {error}
+        </p>
+      )}
     </section>
   );
 }
