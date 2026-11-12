@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSession, getSessionToken } from "@/services/authService";
 import { API_URL } from "@/config/api";
+import { checkOrigin } from "@/utils/checkOrigin";
 
 type CurrentUser = {
   id: number;
@@ -31,7 +32,8 @@ async function api<T>(
     body,
   });
   const result = (await response.json().catch(() => null)) as
-    (T & { error?: string }) | null;
+    | (T & { error?: string })
+    | null;
   if (!response.ok)
     throw new Error(result?.error || `Erreur API (${response.status}).`);
   if (!result) throw new Error("Réponse API invalide.");
@@ -65,8 +67,7 @@ async function upload(
  * La restauration d’un rôle provisoire n’est tentée que si aucune demande de création du logement n’a été envoyée.
  */
 export async function POST(request: NextRequest) {
-  const origin = request.headers.get("origin");
-  if (!origin || origin !== request.nextUrl.origin)
+  if (!checkOrigin(request))
     return NextResponse.json(
       { error: "Origine non autorisée." },
       { status: 403 },
